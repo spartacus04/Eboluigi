@@ -18,17 +18,6 @@ module.exports = class FortuneCommand extends Command {
   }
 
   async run(message) {
-    try {
-      const res = await fetch('http://yerkee.com/api/fortune');
-      const json = await res.json();
-      const embed = new MessageEmbed()
-        .setColor('RANDOM')
-        .setTitle('Biscotto della fortuna')
-        .setDescription(json.fortune);
-      return message.say(embed);
-    } catch (e) {
-      message.say('Non ho potuto trovare il biscotto sgravato esagerato :confused: ');
-      return console.error(e);
-    }
+    message.say("Il biscotto della fortuna dice che sei gay");
   }
 };

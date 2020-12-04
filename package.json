@@ -21,6 +21,7 @@
     "random-puppy": "^1.1.0",
     "require-all": "^3.0.0",
     "simple-youtube-api": "^5.2.1",
+    "to-zalgo": "^1.0.1",
     "ytdl-core": "^3.4.2"
   },
   "devDependencies": {

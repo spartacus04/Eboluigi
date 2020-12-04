@@ -1,13 +1,14 @@
 const { Command } = require('../../discord.js-commando/src');
+const zalgo = require('to-zalgo');
 
 module.exports = class SayCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'say',
-      aliases: ['make-me-say', 'print'],
+      aliases: ['make-me-say', 'print', 'zalgo'],
       memberName: 'say',
       group: 'other',
-      description: 'Ripeto cio che dici',
+      description: 'Ripeto cio che dici in modo maledetto',
       args: [
         {
           key: 'text',
@@ -19,6 +20,6 @@ module.exports = class SayCommand extends Command {
   }
 
   run(message, { text }) {
-    return message.say(text);
+    return message.say(zalgo(text));
   }
 };

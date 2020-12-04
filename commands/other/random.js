@@ -24,8 +24,6 @@ module.exports = class RandomNumberCommand extends Command {
   }
 
   run(message, { min, max }) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return message.say(Math.floor(Math.random() * (max - min + 1)) + min);
+    message.say("69420 lol");
   }
 };

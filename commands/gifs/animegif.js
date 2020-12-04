@@ -19,7 +19,7 @@ module.exports = class AnimegifCommand extends Command {
   }
 
   run(message) {
-    fetch(`https://api.tenor.com/v1/random?key=${tenorAPI}&q=anime&limit=1`)
+    fetch(`https://api.tenor.com/v1/random?key=${tenorAPI}&q=saitama&limit=1`)
       .then(res => res.json())
       .then(json => message.say(json.results[0].url))
       .catch(err => {

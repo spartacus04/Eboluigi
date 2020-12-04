@@ -1,6 +1,4 @@
-// const fetch = require("node-fetch");
-// const { tenorAPI } = require("../config.json");
-const fs = require('fs');
+const randomPuppy = require('random-puppy');
 const { Command } = require('../../discord.js-commando/src');
 
 module.exports = class JojoCommand extends Command {
@@ -19,39 +17,17 @@ module.exports = class JojoCommand extends Command {
   }
 
   run(message) {
-    try {
-      const linkArray = fs
-        .readFileSync('resources/gifs/jojolinks.txt', 'utf8')
-        .split('\n');
-      const link = linkArray[Math.floor(Math.random() * linkArray.length)];
-      return message.say(link);
+    let subreddit = "cursedjojo";
 
-      /*
-      I changed the command from calling the tenor api each time someone
-      uses the !jojo command for 2 main reasons:
-      
-      1. The tenor api doesn't always respond with a valid jojo gif, sometimes
-      it responds with a wrong gif.
-      2. Instead of waiting for the api we can just pick a random link from
-      the jojolinks file so the response is faster.
-      You can still use the old method, it's commented out down below, and
-      don't forget to uncomment the require for node-fetch and tenorAPI above
-      */
+    message.channel.startTyping();
 
-      /*
-      fetch(
-        `https://api.tenor.com/v1/random?key=${tenorAPI}&q=jojos-bizarre-adventure&limit=1`
-      )
-        .then(res => res.json())
-        .then(json => message.say(json.results[0].url))
-        .catch(e => {
-          message.say('Failed to fetch a gif :slight_frown:');
-          return console.error(e);
-        })
-      */
-    } catch (e) {
-      message.say('Non ho trovato il gif <:tasbien:712705754678951987>');
-      return console.error(e);
-    }
+    randomPuppy(subreddit).then(async url => {
+            await message.channel.send({
+                files: [{
+                    attachment: url,
+                    name: 'meme.png'
+                }]
+            }).then(() => message.channel.stopTyping());
+    }).catch(err => console.error(err));
   }
 };

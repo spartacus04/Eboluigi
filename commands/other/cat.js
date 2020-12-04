@@ -1,6 +1,7 @@
 const fetch = require('node-fetch');
 const { tenorAPI } = require('../../config.json');
 const { Command } = require('../../discord.js-commando/src');
+const randomPuppy = require('random-puppy');
 
 module.exports = class CatCommand extends Command {
   constructor(client) {
@@ -18,12 +19,17 @@ module.exports = class CatCommand extends Command {
   }
 
   run(message) {
-    fetch(`https://api.tenor.com/v1/random?key=${tenorAPI}&q=cat&limit=1`)
-      .then(res => res.json())
-      .then(json => message.say(json.results[0].url))
-      .catch(err => {
-        message.say('Bruh non ho trovato un gatto');
-        return console.error(err);
-      });
+    let subreddit = "cursedcats";
+
+    message.channel.startTyping();
+
+    randomPuppy(subreddit).then(async url => {
+            await message.channel.send({
+                files: [{
+                    attachment: url,
+                    name: 'meme.png'
+                }]
+            }).then(() => message.channel.stopTyping());
+    }).catch(err => console.error(err));
   }
 };

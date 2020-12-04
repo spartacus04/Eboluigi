@@ -18,7 +18,7 @@ module.exports = class InsultCommand extends Command {
 
   run(message) {
     // thanks to https://evilinsult.com :)
-    fetch('https://evilinsult.com/generate_insult.php?lang=en&type=json')
+    fetch('https://evilinsult.com/generate_insult.php?lang=it&type=json')
       .then(res => res.json())
       .then(json => {
         const embed = new MessageEmbed()

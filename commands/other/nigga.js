@@ -12,11 +12,6 @@ module.exports = class RandomNumberCommand extends Command {
   }
 
   run(message) {
-    message.channel.send({
-        files: [{
-            attachment: "https://i.redd.it/adswy1g5mh631.jpg",
-            name: 'mword.png'
-        }]
-    })
+    message.say('Eboluigi dice: il razzismo è più divertente quando non hai un n-word pass');
   }
 };

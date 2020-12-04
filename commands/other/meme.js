@@ -5,7 +5,7 @@ module.exports = class RandomNumberCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'meme',
-      aliases: ['meme'],
+      aliases: ['meme', 'cursedimage'],
       memberName: 'meme',
       group: 'other',
       description: 'Invia un Meme'
@@ -13,12 +13,7 @@ module.exports = class RandomNumberCommand extends Command {
   }
 
   run(message) {
-    let reddit = [
-        "ShitPostCrusaders",
-        "memes"
-    ]
-
-    let subreddit = reddit[Math.floor(Math.random() * reddit.length)];
+    let subreddit = "hmmm";
 
     message.channel.startTyping();
 

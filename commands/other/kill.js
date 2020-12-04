@@ -13,17 +13,6 @@ module.exports = class RandomNumberCommand extends Command {
   }
 
   run(message) {
-    let subreddit = "wholesomememes";
-
-    message.channel.startTyping();
-
-    randomPuppy(subreddit).then(async url => {
-            await message.channel.send({
-                files: [{
-                    attachment: url,
-                    name: 'meme.png'
-                }]
-            }).then(() => message.channel.stopTyping());
-    }).catch(err => console.error(err));
+    message.say("Ora conosco la tua posizione")
   }
 };
