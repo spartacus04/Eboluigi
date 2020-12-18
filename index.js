@@ -2,7 +2,6 @@
 const { CommandoClient } = require('./discord.js-commando/src');
 const { Structures } = require('discord.js');
 const path = require('path');
-const Cron = require("cron");
 const randomPuppy = require('random-puppy');
 
 Structures.extend('Guild', function(Guild) {
@@ -97,4 +96,5 @@ client.on('guildMemberAdd', member => {
   channel.send(`Welcome ${member}!`);
 });
 
-client.login(process.env.token);
+//client.login(process.env.token);
+client.login("Nzg0MTM4ODM3Mjg2NzE1NDIy.X8k8Mw._L_cGY_5SRBPN3nK-imy7HdK4lU");

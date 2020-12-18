@@ -20,7 +20,7 @@ module.exports = class CatCommand extends Command {
   run(message) {
     message.channel.startTyping();
 
-    randomPuppy("cursedcats").then(async url => {
+    randomPuppy("dogpictures").then(async url => {
             await message.channel.send({
                 files: [{
                     attachment: url,

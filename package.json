@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@discordjs/opus": "^0.3.3",
+    "better-random-puppy": "^1.0.1",
     "cheerio": "^1.0.0-rc.3",
     "common-tags": "^1.8.0",
     "cron": "^1.8.2",

@@ -1,4 +1,5 @@
-const randomPuppy = require('random-puppy');
+
+const fs = require('fs');
 const { Command } = require('../../discord.js-commando/src');
 
 module.exports = class JojoCommand extends Command {
@@ -17,17 +18,15 @@ module.exports = class JojoCommand extends Command {
   }
 
   run(message) {
-    let subreddit = "cursedjojo";
-
-    message.channel.startTyping();
-
-    randomPuppy(subreddit).then(async url => {
-            await message.channel.send({
-                files: [{
-                    attachment: url,
-                    name: 'meme.png'
-                }]
-            }).then(() => message.channel.stopTyping());
-    }).catch(err => console.error(err));
+    try {
+      const linkArray = fs
+        .readFileSync('resources/gifs/jojolinks.txt', 'utf8')
+        .split('\n');
+      const link = linkArray[Math.floor(Math.random() * linkArray.length)];
+      return message.say(link);
+    } catch (e) {
+      message.say('Non ho trovato il gif <:tasbien:712705754678951987>');
+      return console.error(e);
+    }
   }
 };
