@@ -2,7 +2,6 @@
 const { CommandoClient } = require('./discord.js-commando/src');
 const { Structures } = require('discord.js');
 const path = require('path');
-const { prefix, token, discord_owner_id } = require('./config.json');
 const Cron = require("cron");
 const randomPuppy = require('random-puppy');
 
@@ -98,27 +97,4 @@ client.on('guildMemberAdd', member => {
   channel.send(`Welcome ${member}!`);
 });
 
-function mementos() {
-	let reddit = [
-		"memes"
-	]
-
-	let channel = client.channels.cache.get(`711647597411958827`);
-	let subreddit = reddit[Math.floor(Math.random() * reddit.length)];
-
-	channel.startTyping();
-
-	randomPuppy(subreddit).then(async url => {
-			await channel.send({
-				files: [{
-					attachment: url,
-					name: 'meme.png'
-				}]
-			}).then(() => channel.stopTyping());
-	}).catch(err => console.error(err));
-}
-
-let dailymeme = new Cron.CronJob('00 00 10 * * *', mementos);
-dailymeme.start();
-
-client.login(token);
+client.login(process.env.token);
