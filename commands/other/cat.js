@@ -1,5 +1,4 @@
 const fetch = require('node-fetch');
-const { tenorAPI } = require('../../config.json');
 const { Command } = require('../../discord.js-commando/src');
 const randomPuppy = require('random-puppy');
 
@@ -19,11 +18,9 @@ module.exports = class CatCommand extends Command {
   }
 
   run(message) {
-    let subreddit = "cursedcats";
-
     message.channel.startTyping();
 
-    randomPuppy(subreddit).then(async url => {
+    randomPuppy("cursedcats").then(async url => {
             await message.channel.send({
                 files: [{
                     attachment: url,

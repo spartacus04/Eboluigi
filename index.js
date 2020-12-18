@@ -29,8 +29,8 @@ Structures.extend('Guild', function(Guild) {
 });
 
 const client = new CommandoClient({
-  commandPrefix: prefix,
-  owner: discord_owner_id // value comes from config.json
+  commandPrefix: "l.",
+  owner: "465954478852669460" // value comes from config.json
 });
 
 client.registry

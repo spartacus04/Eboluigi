@@ -18,11 +18,15 @@
     "discord.js": "github:discordjs/discord.js",
     "ffmpeg-static": "^2.7.0",
     "iso-639-1": "^2.1.4",
+    "lyrics-finder": "^21.4.0",
     "random-puppy": "^1.1.0",
     "require-all": "^3.0.0",
     "simple-youtube-api": "^5.2.1",
+    "soundcloud-downloader": "^0.2.1",
+    "string-progressbar": "^1.0.1",
     "to-zalgo": "^1.0.1",
-    "ytdl-core": "^3.4.2"
+    "ytdl-core": "^3.4.2",
+    "ytdl-core-discord": "^1.2.4"
   },
   "devDependencies": {
     "@getify/eslint-plugin-proper-arrows": "^8.0.1",
