@@ -16,26 +16,26 @@
     "cheerio": "^1.0.0-rc.3",
     "common-tags": "^1.8.0",
     "cron": "^1.8.2",
-    "discord.js": "github:discordjs/discord.js",
-    "ffmpeg-static": "^2.7.0",
+    "discord.js": "^12.5.1",
+    "ffmpeg-static": "^4.2.7",
     "iso-639-1": "^2.1.4",
     "lyrics-finder": "^21.4.0",
     "random-puppy": "^1.1.0",
     "require-all": "^3.0.0",
     "simple-youtube-api": "^5.2.1",
-    "soundcloud-downloader": "^0.2.1",
+    "soundcloud-downloader": "^0.2.2",
     "string-progressbar": "^1.0.1",
     "to-zalgo": "^1.0.1",
-    "ytdl-core": "^3.4.2",
+    "ytdl-core": "^4.2.1",
     "ytdl-core-discord": "^1.2.4"
   },
   "devDependencies": {
-    "@getify/eslint-plugin-proper-arrows": "^8.0.1",
+    "@getify/eslint-plugin-proper-arrows": "^10.0.0",
     "@getify/eslint-plugin-proper-ternary": "^3.0.1",
     "babel-eslint": "^10.1.0",
-    "eslint": "^5.16.0",
+    "eslint": "^7.16.0",
     "nodemon": "^2.0.6",
-    "prettier": "^1.19.1"
+    "prettier": "^2.2.1"
   },
   "engines": {
     "node": "12.14.1",
