@@ -1,4 +1,3 @@
-
 const fs = require('fs');
 const { Command } = require('../../discord.js-commando/src');
 

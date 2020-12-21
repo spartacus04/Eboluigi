@@ -56,16 +56,9 @@ client.once('ready', () => {
 });
 
 client.on('message', message => {
-	if(message.channel.id == "712644431622438922"){
-		if(message.member.id != "711871380622409730"){
-			message.channel.send("Bruh");
-			message.delete();
-		}
-  }
-  else{
-    if(message.content == "Eboluigi lesbico" || message.content == "eboluigi lesbico"){
-      message.channel.send("No tu");
-    }
+	
+  if(message.content == "Eboluigi lesbico" || message.content == "eboluigi lesbico"){
+    message.channel.send("No tu");
   }
 });
 
