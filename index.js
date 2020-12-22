@@ -57,7 +57,7 @@ client.once('ready', () => {
 
 client.on('message', message => {
 	
-  if(message.content == "Eboluigi lesbico" || message.content == "eboluigi lesbico"){
+  if(message.content.toLowerCase() == "eboluigi lesbico"){
     message.channel.send("No tu");
   }
 });

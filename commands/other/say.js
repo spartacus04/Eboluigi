@@ -20,6 +20,11 @@ module.exports = class SayCommand extends Command {
   }
 
   run(message, { text }) {
-    return message.say(zalgo(text));
+    if(text.toLowerCase() == "eboluigi lesbico"){
+      return message.say("i tuoi insulti da comune mortale sono patetici");
+    }
+    else{
+      return message.say(zalgo(text));
+    }
   }
 };
