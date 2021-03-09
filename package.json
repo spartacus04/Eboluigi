@@ -1,7 +1,7 @@
 {
   "name": "eboluigi",
   "version": "1.0.0",
-  "description": "Bot di discord",
+  "description": "Bot di discord fatto male",
   "main": "index.js",
   "scripts": {
     "start": "node .",
