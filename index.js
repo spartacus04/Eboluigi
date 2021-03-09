@@ -1,6 +1,6 @@
 /* eslint-disable no-empty */
 const { CommandoClient } = require('./discord.js-commando/src');
-const { Structures } = require('discord.js');
+const { Structures, Collection } = require('discord.js');
 const path = require('path');
 const randomPuppy = require('random-puppy');
 
@@ -46,6 +46,11 @@ client.registry
     commandState: false
   })
   .registerCommandsIn(path.join(__dirname, 'commands'));
+
+client.commands = new Collection();
+client.queue = new Map();
+const cooldowns = new Collection();
+const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 client.once('ready', () => {
   console.log('Ready!');
