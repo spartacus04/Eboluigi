@@ -11,34 +11,33 @@
   "author": "Andrea Bonari",
   "license": "ISC",
   "dependencies": {
-    "@discordjs/opus": "^0.4.0",
+    "@discordjs/opus": "^0.5.0",
     "cheerio": "^1.0.0-rc.5",
     "common-tags": "^1.8.0",
     "cron": "^1.8.2",
-    "discord.js": "^12.5.1",
-    "ffmpeg-static": "^4.2.7",
-    "iso-639-1": "^2.1.8",
+    "discord.js": "^12.5.3",
+    "discord.js-commando-it": "^0.12.3",
+    "ffmpeg-static": "^4.3.0",
+    "iso-639-1": "^2.1.9",
     "lyrics-finder": "^21.7.0",
     "random-puppy": "^1.1.0",
     "require-all": "^3.0.0",
     "simple-youtube-api": "^5.2.1",
-    "soundcloud-downloader": "^0.2.4",
+    "soundcloud-downloader": "^1.0.0",
     "string-progressbar": "^1.0.3",
-    "to-zalgo": "^1.0.1",
-    "ytdl-core": "^4.5.0",
-    "ytdl-core-discord": "^1.2.5"
+    "to-zalgo": "^1.0.1"
   },
   "devDependencies": {
     "@getify/eslint-plugin-proper-arrows": "^10.0.0",
     "@getify/eslint-plugin-proper-ternary": "^3.0.1",
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.21.0",
+    "eslint": "^7.24.0",
     "nodemon": "^2.0.7",
     "prettier": "^2.2.1"
   },
   "engines": {
-    "node": "12.14.1",
-    "npm": "6.13.4"
+    "node": ">=12.14.1",
+    "npm": ">=6.13.4"
   },
   "repository": {
     "type": "git",

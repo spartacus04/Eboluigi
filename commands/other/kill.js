@@ -1,4 +1,4 @@
-const { Command } = require('../../discord.js-commando/src');
+const { Command } = require('discord.js-commando-it');
 const randomPuppy = require('random-puppy');
 
 module.exports = class RandomNumberCommand extends Command {

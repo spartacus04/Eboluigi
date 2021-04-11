@@ -1,4 +1,4 @@
-const { Command } = require('../../discord.js-commando/src');
+const { Command } = require('discord.js-commando-it');
 
 module.exports = class ShuffleQueueCommand extends Command {
   constructor(client) {

@@ -1,5 +1,4 @@
-const fetch = require('node-fetch');
-const { Command } = require('../../discord.js-commando/src');
+const { Command } = require('discord.js-commando-it');
 const randomPuppy = require('random-puppy');
 
 module.exports = class CatCommand extends Command {

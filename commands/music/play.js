@@ -2,7 +2,7 @@ const { play } = require("./include/play");
 const scdl = require("soundcloud-downloader").default;
 const https = require("https");
 const SOUNDCLOUD_CLIENT_ID = process.env.scAPI;
-const { Command } = require('../../discord.js-commando/src');
+const { Command } = require('discord.js-commando-it');
 const { message } = require('discord.js');
 
 module.exports = class PlayCommand extends Command{

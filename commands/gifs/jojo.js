@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { Command } = require('../../discord.js-commando/src');
+const { Command } = require('discord.js-commando-it');
 
 module.exports = class JojoCommand extends Command {
   constructor(client) {

@@ -1,5 +1,5 @@
 /* eslint-disable no-empty */
-const { CommandoClient } = require('./discord.js-commando/src');
+const { CommandoClient } = require('discord.js-commando-it');
 const { Structures, Collection } = require('discord.js');
 const path = require('path');
 const randomPuppy = require('random-puppy');

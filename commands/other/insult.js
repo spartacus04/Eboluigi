@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-const { Command } = require('../../discord.js-commando/src');
+const { Command } = require('discord.js-commando-it');
 const { MessageEmbed } = require('discord.js');
 
 module.exports = class InsultCommand extends Command {

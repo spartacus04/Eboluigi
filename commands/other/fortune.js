@@ -1,6 +1,4 @@
-const fetch = require('node-fetch');
-const { Command } = require('../../discord.js-commando/src');
-const { MessageEmbed } = require('discord.js');
+const { Command } = require('discord.js-commando-it');
 
 module.exports = class FortuneCommand extends Command {
   constructor(client) {

@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const fs = require('fs');
-const { Command } = require('../../discord.js-commando/src');
+const { Command } = require('discord.js-commando-it');
 
 module.exports = class GlobalNewsCommand extends Command {
   constructor(client) {
