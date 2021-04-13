@@ -1,7 +1,6 @@
-test.js
+test.ts
 node_modules/
 package-lock.json
 node_modules/
 .vscode/
-.eslinrc.json
-discord.js-commando/
+dist/
