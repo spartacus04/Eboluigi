@@ -1,9 +1,9 @@
 import { Client, CommandoMessage, Command } from "discord.js-commando-it";
 import { MusicGuild } from "../../index";
 import { MessageEmbed, VoiceChannel } from 'discord.js';
-import scdl from "soundcloud-downloader";
-import * as https from 'https';
 import { SetInfo, TrackInfo } from "soundcloud-downloader/src/info";
+const scdl = require("soundcloud-downloader").default;
+import * as https from 'https';
 
 module.exports = class PlayCommand extends Command {
   constructor(client : Client) {
@@ -64,7 +64,7 @@ module.exports = class PlayCommand extends Command {
           return;
         }
 
-      }).catch(function(err) {
+      }).catch(function(err : any) {
         console.log(err);
         return message.say("Qualcosa è andato storto");
       });
@@ -120,7 +120,7 @@ module.exports = class PlayCommand extends Command {
     queue[0].voiceChannel
       .join()
       .then(function(connection : any) {
-        scdl.download(queue[0].url).then(stream =>{
+        scdl.download(queue[0].url).then((stream : any)=>{
         const dispatcher = connection
           .play(stream)
           .on('start', function() {

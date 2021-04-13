@@ -1,6 +1,6 @@
 import { CommandoMessage, Command, CommandoClient } from "discord.js-commando-it";
 import { MessageEmbed } from 'discord.js';
-import fs from 'fs';
+import * as fs from 'fs';
 
 module.exports = class MotivationCommand extends Command {
   constructor(client : CommandoClient) {
