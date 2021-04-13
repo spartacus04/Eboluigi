@@ -1,10 +1,11 @@
 import { Client, CommandoMessage, Command } from "discord.js-commando-it";
 import { MusicGuild } from "../../index";
-import { MessageEmbed, VoiceChannel } from 'discord.js';
+import { Message, MessageEmbed, VoiceChannel } from 'discord.js';
 import { SetInfo, TrackInfo } from "soundcloud-downloader/src/info";
 const scdl = require("soundcloud-downloader").default;
+//import scdl from 'soundcloud-downloader';
 import * as https from 'https';
-
+import { SearchResponseAll } from "soundcloud-downloader/src/search";
 module.exports = class PlayCommand extends Command {
   constructor(client : Client) {
     super(client, {
@@ -112,9 +113,112 @@ module.exports = class PlayCommand extends Command {
       }
     }
 
-    // TODO: ricerca per nome
-    return message.say("Non ho trovato niente");
+    var seso = await scdl.search({query: query, resourceType : 'tracks', limit: 5}).then(async (videos : SearchResponseAll) => {
+      if (videos.collection.length < 5 || !videos) {
+        message.say(
+          `Devi capire che ho dei problemi sii più specifico oppure esplodi`
+        );
+        return;
+      }
+      const vidNameArr = [];
+      for (let i = 0; i < videos.collection.length; i++) {
+        vidNameArr.push(`${i + 1}: ${(videos.collection[i] as TrackInfo).title}`);
+      }
+      vidNameArr.push('exit');
+      
+      const embed = new MessageEmbed()
+        .setColor('#e9f931')
+        .setTitle('Commenta scegliendo da 1 a 5')
+        .addField('1', vidNameArr[0])
+        .addField('2', vidNameArr[1])
+        .addField('3', vidNameArr[2])
+        .addField('4', vidNameArr[3])
+        .addField('5', vidNameArr[4])
+        .addField('Esci', '❌');
+      var songEmbed : Message = await message.channel.send({ embed });
+  
+      songEmbed.react('1️⃣')
+      .then(() => songEmbed.react('2️⃣'))
+      .then(() => songEmbed.react('3️⃣'))
+      .then(() => songEmbed.react('4️⃣'))
+      .then(() => songEmbed.react('5️⃣'))
+      .then(() => songEmbed.react('❌'));
+  
+      songEmbed.awaitReactions(
+          function(reaction, user) {
+            return ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '❌'].includes(reaction.emoji.name) && user.id === message.author.id;
+          },
+          {
+            max: 1,
+            time: 60000,
+            errors: ['time']
+          }
+        )
+        .then(function(collected) {
+          const reaction = collected.first()
+          var videoIndex;
+          switch(reaction.emoji.name){
+            case '❌':
+              songEmbed.delete();
+              return;
+            case '1️⃣':
+              videoIndex = 0;
+              break;
+            case '2️⃣':
+              videoIndex = 1;
+              break;
+            case '3️⃣':
+              videoIndex = 2;
+              break;
+            case '4️⃣':
+              videoIndex = 3;
+              break;
+            case '5️⃣':
+              videoIndex = 4;
+              break;
+          }
+          
+          ((message.guild as any)as MusicGuild).musicData.queue.push(
+            PlayCommand.constructSongObj(
+              (videos.collection[videoIndex] as TrackInfo).permalink_url,
+              (videos.collection[videoIndex] as TrackInfo),
+              voiceChannel,
+              message.member.user
+            )
+          );
+          if (((message.guild as any)as MusicGuild).musicData.isPlaying == false) {
+            ((message.guild as any)as MusicGuild).musicData.isPlaying = true;
+            if (songEmbed) {
+              songEmbed.delete();
+            }
+            PlayCommand.playSong(((message.guild as any)as MusicGuild).musicData.queue, message);
+          } else if (((message.guild as any)as MusicGuild).musicData.isPlaying == true) {
+            if (songEmbed) {
+              songEmbed.delete();
+            }
+            message.say(`${(videos.collection[videoIndex] as TrackInfo).title} aggiunta alla queue`);
+            return;
+          }
+        })
+        .catch(function(err) {
+          if (songEmbed) {
+            songEmbed.delete();
+          }
+          message.say(
+            'Ti ho detto di darmi un numero da 1 a 5 oppure esci'
+          );
+          return;
+        });
+    }).catch(async function() {
+      await message.say(
+        "C'è stato un problema a cercare il brano bruh"
+      );
+      return;
+    });
   }
+
+
+
   static playSong(queue : any, message : CommandoMessage) {
     const classThis = this; // use classThis instead of 'this' because of lexical scope below
     queue[0].voiceChannel
