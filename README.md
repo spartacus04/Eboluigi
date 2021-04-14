@@ -21,10 +21,9 @@ Il bot è basato su  https://github.com/spartacus04/Malario
   - loop <numero di volte>: Ripete una canzone per x volte
   - loopqueue <numero di volte>: Ripete la queue per x volte
   - lyrics [canzone]: Dice le liriche di una canzone dato il nome oppure la musica in riproduzione
-  - musictrivia <numero di canzoni>: Quiz musicale con dato numero di canzoni
   - np: Dice la canzone in riproduzione
   - pause: Mette in pausa la riproduzione
-  - play <url/nome>: Riproduce un video/playlist da youtube, altrimenti cerca il video e lo riproduce
+  - play <url/nome>: Riproduce un brano/playlist da soundcloud, altrimenti cerca il video e lo riproduce
   - queue: Mostra gli elementi nella queue
   - remove <numero canzone>:Rimuove una canzone dalla queue
   - resume: Riprende la riproduzione di una canzone in pausa
@@ -32,7 +31,6 @@ Il bot è basato su  https://github.com/spartacus04/Malario
   - skip: Salta la canzone
   - skipall: Salta tutte le canzoni
   - skipto <numero canzone>: Salta ogni canzone fino a quella selezionata
-  - stoptrivia: Conclude il quiz musicale
   - volume <volume>: Imposta il volume
   
 ### Altro
