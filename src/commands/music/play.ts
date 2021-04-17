@@ -113,7 +113,7 @@ module.exports = class PlayCommand extends Command {
       }
     }
 
-    var seso = await scdl.search({query: query, resourceType : 'tracks', limit: 5}).then(async (videos : SearchResponseAll) => {
+    await scdl.search({query: query, resourceType : 'tracks', limit: 5}).then(async (videos : SearchResponseAll) => {
       if (videos.collection.length < 5 || !videos) {
         message.say(
           `Devi capire che ho dei problemi sii più specifico oppure esplodi`
@@ -134,81 +134,39 @@ module.exports = class PlayCommand extends Command {
         .addField('3', vidNameArr[2])
         .addField('4', vidNameArr[3])
         .addField('5', vidNameArr[4])
-        .addField('Esci', '❌');
-      var songEmbed : Message = await message.channel.send({ embed });
+        .addField('Esci', 'exit');
+    
+        var songEmbed : Message = await message.channel.send({ embed });
+
+        var value : number = await PlayCommand.awaitMessage(songEmbed, message);
+
+        songEmbed.delete();
+
+        if(value == 6)
+        return;
   
-      songEmbed.react('1️⃣')
-      .then(() => songEmbed.react('2️⃣'))
-      .then(() => songEmbed.react('3️⃣'))
-      .then(() => songEmbed.react('4️⃣'))
-      .then(() => songEmbed.react('5️⃣'))
-      .then(() => songEmbed.react('❌'));
-  
-      songEmbed.awaitReactions(
-          function(reaction, user) {
-            return ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '❌'].includes(reaction.emoji.name) && user.id === message.author.id;
-          },
-          {
-            max: 1,
-            time: 60000,
-            errors: ['time']
-          }
-        )
-        .then(function(collected) {
-          const reaction = collected.first()
-          var videoIndex;
-          switch(reaction.emoji.name){
-            case '❌':
-              songEmbed.delete();
-              return;
-            case '1️⃣':
-              videoIndex = 0;
-              break;
-            case '2️⃣':
-              videoIndex = 1;
-              break;
-            case '3️⃣':
-              videoIndex = 2;
-              break;
-            case '4️⃣':
-              videoIndex = 3;
-              break;
-            case '5️⃣':
-              videoIndex = 4;
-              break;
-          }
-          
-          ((message.guild as any)as MusicGuild).musicData.queue.push(
-            PlayCommand.constructSongObj(
-              (videos.collection[videoIndex] as TrackInfo).permalink_url,
-              (videos.collection[videoIndex] as TrackInfo),
-              voiceChannel,
-              message.member.user
-            )
-          );
-          if (((message.guild as any)as MusicGuild).musicData.isPlaying == false) {
-            ((message.guild as any)as MusicGuild).musicData.isPlaying = true;
-            if (songEmbed) {
-              songEmbed.delete();
-            }
-            PlayCommand.playSong(((message.guild as any)as MusicGuild).musicData.queue, message);
-          } else if (((message.guild as any)as MusicGuild).musicData.isPlaying == true) {
-            if (songEmbed) {
-              songEmbed.delete();
-            }
-            message.say(`${(videos.collection[videoIndex] as TrackInfo).title} aggiunta alla queue`);
-            return;
-          }
-        })
-        .catch(function(err) {
+
+        ((message.guild as any)as MusicGuild).musicData.queue.push(
+          PlayCommand.constructSongObj(
+            (videos.collection[value - 1] as TrackInfo).permalink_url,
+            (videos.collection[value - 1] as TrackInfo),
+            voiceChannel,
+            message.member.user
+          )
+        );
+        if (((message.guild as any)as MusicGuild).musicData.isPlaying == false) {
+          ((message.guild as any)as MusicGuild).musicData.isPlaying = true;
           if (songEmbed) {
             songEmbed.delete();
           }
-          message.say(
-            'Ti ho detto di darmi un numero da 1 a 5 oppure esci'
-          );
+          PlayCommand.playSong(((message.guild as any)as MusicGuild).musicData.queue, message);
+        } else if (((message.guild as any)as MusicGuild).musicData.isPlaying == true) {
+          if (songEmbed) {
+            songEmbed.delete();
+          }
+          message.say(`${(videos.collection[value - 1] as TrackInfo).title} aggiunta alla queue`);
           return;
-        });
+        }
     }).catch(async function() {
       await message.say(
         "C'è stato un problema a cercare il brano bruh"
@@ -217,7 +175,46 @@ module.exports = class PlayCommand extends Command {
     });
   }
 
+//@ts-ignore
+static async awaitMessage(songEmbed : Message, message : CommandoMessage)  : Promise<number> {
 
+  var videoIndex : number;
+  var mesToDelete : Message;
+  await message.channel
+  .awaitMessages(
+      function(msg) {
+        return (msg.content > 0 && msg.content < 6) || msg.content === 'exit';
+      },
+      {
+        max: 1,
+        time: 60000,
+        errors: ['time']
+      }
+    )
+    .then(function(response) {
+      mesToDelete = response.first();
+      console.log(parseInt(response.first().content));
+
+      if (response.first().content === 'exit') {
+        videoIndex = 6;
+        return (6 as number);
+      }
+      else if(parseInt(response.first().content) > 0 && parseInt(response.first().content) < 6){
+        videoIndex = parseInt(response.first().content);
+        return parseInt(response.first().content);
+      }
+      else{
+        message.say(
+          'Ti ho detto di darmi un numero da 1 a 5 oppure esci'
+        );
+        return undefined;
+      }
+    });
+    
+    mesToDelete.delete();
+
+    return videoIndex;
+  }
 
   static playSong(queue : any, message : CommandoMessage) {
     const classThis = this; // use classThis instead of 'this' because of lexical scope below
