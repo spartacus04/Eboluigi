@@ -3,8 +3,6 @@ import { CommandoMessage, Command, CommandoClient } from "discord.js-commando-it
 import fetch from 'node-fetch';
 import { URL } from "url";
 
-const randomPuppy = require('random-puppy');
-
 module.exports = class CatCommand extends Command {
   constructor(client : CommandoClient) {
     super(client, {
