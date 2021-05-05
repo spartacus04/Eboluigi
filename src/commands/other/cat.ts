@@ -23,7 +23,6 @@ module.exports = class CatCommand extends Command {
     message.channel.startTyping();
 
     let subreddit = "dogpictures";
-    message.channel.startTyping();
 
     try {
       var url = new URL(`https://www.reddit.com/r/${subreddit}.json?sort=top&t=week`),
