@@ -15,7 +15,7 @@ module.exports = class RandomNumberCommand extends Command {
   run(message : CommandoMessage) {
     message.channel.send({
         files: [{
-            attachment: "https://www.dropbox.com/s/4o4tndtc7uwxov0/ynet.jpg?dl=1",
+            attachment: "https://raw.githubusercontent.com/spartacus04/Eboluigi/master/resources/images/ynet.jpg",
             name: 'ynet.png'
         }]
     })

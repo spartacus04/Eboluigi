@@ -16,17 +16,14 @@ module.exports = class JojoCommand extends Command {
     });
   }
 
-  //@ts-ignore
   run(message : CommandoMessage) {
-    try {
-      const linkArray = fs
-        .readFileSync('resources/quotes/tpose.txt', 'utf8')
-        .split('\n');
-      const link = linkArray[Math.floor(Math.random() * linkArray.length)];
-      return message.say(link);
-    } catch (e) {
-      message.say('Non ho trovato il gif <:tasbien:712705754678951987>');
-      return console.error(e);
-    }
+    var files = fs.readdirSync('resources/images/tpose');
+    const link = files[Math.floor(Math.random() * files.length)];
+    return message.channel.send({
+      files: [{
+        attachment: `https://raw.githubusercontent.com/spartacus04/Eboluigi/master/resources/images/tpose/${link}`,
+        name: 'tpose.jpeg'
+      }]}
+    );
   }
 };
