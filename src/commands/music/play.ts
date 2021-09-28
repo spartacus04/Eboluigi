@@ -1,7 +1,7 @@
 import { Command, eMessage } from '../../config';
 import { MessageActionRow, MessageButton, MessageComponentInteraction, MessageEmbed, User, VoiceChannel } from 'discord.js';
 import scdl from 'soundcloud-downloader';
-import { TrackInfo } from 'soundcloud-downloader/src/info';
+import { TrackInfo } from 'soundcloud-downloader/dist/info';
 import { music, pushToQueue, videoObj } from '../../musicHandler';
 import { AudioPlayerStatus, AudioResource, createAudioPlayer, createAudioResource, joinVoiceChannel, StreamType } from '@discordjs/voice';
 import { pError } from '../../errors';
