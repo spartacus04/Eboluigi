@@ -1,10 +1,9 @@
 {
   "compilerOptions": {
     "target": "es2017",
-    "allowJs": true,                          /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019', 'ES2020', or 'ESNEXT'. */
     "module": "commonjs",                     /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', 'es2020', or 'ESNext'. */
     "rootDir": "src",                       /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
-    "strict": true,                           /* Enable all strict type-checking options. */    
+    "strict": true,                           /* Enable all strict type-checking options. */
     "esModuleInterop": true,                  /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
     "skipLibCheck": true,                     /* Skip type checking of declaration files. */
     "forceConsistentCasingInFileNames": true,  /* Disallow inconsistently-cased references to the same file. */
@@ -12,6 +11,7 @@
     "removeComments": true,
     "noUnusedParameters": false,
     "strictNullChecks": false,
+    "typeRoots": ["./typings", "./node_modules/@types"],
     "lib": [
       "ES5",
       "ES2015.Promise",
@@ -20,7 +20,11 @@
       "esnext"
     ]
   },
-  "exclude" : [
-    "node_modules", "dist"
+  "include": [
+    "**/src/*"
+  ],
+  "exclude": [
+    "**/scripts/*",
+    "**/node_modules/*"
   ]
 }

@@ -1,36 +1,31 @@
-import { CommandoMessage, Command, CommandoClient } from "discord.js-commando-it";
-import { MessageEmbed } from 'discord.js';
+import { Command } from '../../config';
+import { Message, MessageEmbed } from 'discord.js';
 import fetch from 'node-fetch';
+import { logger } from '../../logger';
 
-module.exports = class InsultCommand extends Command {
-  constructor(client : CommandoClient) {
-    super(client, {
-      name: 'insult',
-      group: 'other',
-      memberName: 'insult',
-      description: 'Crea un isulto',
-      throttling: {
-        usages: 1,
-        duration: 6
-      }
-    });
-  }
+const insultCommand : Command = {
+	name: 'insult',
+	description: 'Invia un insulto in italiano',
 
-  // @ts-ignore
-  run(message : CommandoMessage) {
-    fetch('https://evilinsult.com/generate_insult.php?lang=it&type=json')
-      .then(res => res.json())
-      .then(json => {
-        const embed = new MessageEmbed()
-          .setColor('#E41032')
-          .setTitle('Insulto')
-          .setDescription(json.insult)
-          .setURL('https://evilinsult.com');
-        return message.say(embed);
-      })
-      .catch(err => {
-        message.say('Bruh non va :sob:');
-        return console.error(err);
-      });
-  }
+	async run(message : Message) {
+		try {
+			const res = await fetch('https://evilinsult.com/generate_insult.php?lang=it&type=json');
+			const data = await res.json();
+			logger.verbose(data);
+
+			const embed = new MessageEmbed()
+				.setColor('#E41032')
+				.setTitle('Insulto')
+				.setDescription(data.insult)
+				.setURL('https://evilinsult.com');
+
+			return message.channel.send({ embeds : [ embed ] });
+		}
+		catch (err) {
+			logger.error(err);
+			message.channel.send('Bruh non va : sob:');
+		}
+	},
 };
+
+module.exports = insultCommand;

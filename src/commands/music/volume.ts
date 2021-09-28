@@ -1,47 +1,43 @@
-import { Client, CommandoMessage, Command } from "discord.js-commando-it";
-import { MusicGuild } from "../../index";
+import { Command, eMessage } from '../../config';
+import { AudioResource } from '@discordjs/voice';
+import { logger } from '../../logger';
 
-module.exports = class VolumeCommand extends Command {
-  constructor(client : Client) {
-    super(client, {
-      name: 'volume',
-      aliases: ['change-volume'],
-      group: 'music',
-      memberName: 'volume',
-      guildOnly: true,
-      description: 'Volume',
-      throttling: {
-        usages: 1,
-        duration: 5
-      },
-      args: [
-        {
-          key: 'wantedVolume',
-          prompt: 'A che volume?',
-          type: 'float'
-        }
-      ]
-    });
-  }
+const volumeCommand : Command = {
+	name: 'volume',
+	aliases: ['change-volume'],
+	description: 'Cambia o mostra il volume',
+	args: [
+		{
+			key: 'wantedVolume',
+			label: 'volume',
+			prompt: 'Inserisci il nuovo volume',
+			type: 'float',
+		},
+	],
 
-  run(message : CommandoMessage, { wantedVolume } : {wantedVolume : number}) {
-    const voiceChannel = message.member.voice.channel;
-    if (!voiceChannel) return message.reply('Devi essere in un canale plebeo');
+	async run(message : eMessage, { wantedVolume } : { wantedVolume : string }) {
+		const voiceChannel = message.member.voice.channel;
+		if (!voiceChannel) {
+			logger.warn('User isn\'t in a voice channel');
+			return message.reply('Devi essere in un canale plebeo');
+		}
 
-    if (
-      typeof ((message.guild as any)as MusicGuild).musicData.songDispatcher == 'undefined' ||
-      ((message.guild as any)as MusicGuild).musicData.songDispatcher == null
-    ) {
-      return message.reply('Bruh non stai riproducendo niente');
-    } else if (voiceChannel.id !== message.guild.me.voice.channel.id) {
-      message.reply(
-        `Devi essere nel mio stesso canale plebeo`
-      );
-      return;
-    }
-    const volume = wantedVolume / 2;
-    ((message.guild as any)as MusicGuild).musicData.volume = volume;
-    ((message.guild as any)as MusicGuild).musicData.songDispatcher.setVolume(volume);
-    message.say(`Ho messo il volume a: ${wantedVolume}`);
-  }
+		if(!message.getMusicHandler()) {
+			logger.warn('Guild music handler isn\'t playing anything');
+			return message.reply('Bruh non sto riproducendo niente');
+		}
+
+		if(voiceChannel.id != message.guild.me.voice.channel.id) {
+			logger.warn('User isn\'t in current voice channel');
+			return message.reply('Devi essere nel mio stesso canale plebeo');
+		}
+
+		logger.info(`Setting volume to ${wantedVolume}`);
+		message.getMusicHandler().volume = +wantedVolume;
+		((message.getMusicHandler().songDispatcher.player.state as any).resource as AudioResource).volume.setVolume(+wantedVolume);
+
+		await message.channel.send(`Ho messo il volume a: ${wantedVolume}`);
+	},
 };
+
+module.exports = volumeCommand;

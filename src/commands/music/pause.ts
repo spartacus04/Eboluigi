@@ -1,36 +1,36 @@
-import { Client, CommandoMessage, Command } from "discord.js-commando-it";
-import { MusicGuild } from "../../index";
+import { Command, eMessage } from '../../config';
+import { AudioPlayerStatus } from '@discordjs/voice';
+import { logger } from '../../logger';
 
-module.exports = class PauseCommand extends Command {
-  constructor(client : Client) {
-    super(client, {
-      name: 'pause',
-      aliases: ['pause-song', 'hold'],
-      memberName: 'pause',
-      group: 'music',
-      description: 'Mette in pausa',
-      guildOnly: true
-    });
-  }
+const pauseCommand : Command = {
+	name: 'pause',
+	aliases: ['resume', 'toggle-pause'],
+	description: 'Mette la riproduzione in pausa o la riprende',
 
-  run(message : CommandoMessage) {
-    var voiceChannel = message.member.voice.channel;
-    if (!voiceChannel) return message.reply('Devi essere in un canale plebeo');
+	async run(message : eMessage) {
+		const voiceChannel = message.member.voice.channel;
+		if (!voiceChannel) {
+			logger.warn('User isn\'t in a voice channel');
+			return message.reply('Devi essere in un canale plebeo');
+		}
 
-    if (
-      typeof ((message.guild as any)as MusicGuild).musicData.songDispatcher == 'undefined' ||
-      ((message.guild as any)as MusicGuild).musicData.songDispatcher == null
-    ) {
-      return message.say('Bruh non stai riproducendo niente');
-    } else if (voiceChannel.id !== message.guild.me.voice.channel.id) {
-      message.reply(
-        `Devi essere nel mio stesso canale plebeo`
-      );
-      return;
-    }
+		if(!message.getMusicHandler()) {
+			logger.warn('Guild music handler isn\'t playing anything');
+			return message.reply('Bruh non sto riproducendo niente');
+		}
 
-    message.say('Canzone in pausa :pause_button:');
+		if(voiceChannel.id != message.guild.me.voice.channel.id) {
+			logger.warn('User isn\'t in current voice channel');
+			return message.reply('Devi essere nel mio stesso canale plebeo');
+		}
 
-    ((message.guild as any)as MusicGuild).musicData.songDispatcher.pause();
-  }
+		if(message.getMusicHandler().songDispatcher.player.state.status == AudioPlayerStatus.Paused) {
+			logger.info('Resumed music playback');
+			return message.getMusicHandler().songDispatcher.player.unpause();
+		}
+		logger.info('Paused music playback');
+		message.getMusicHandler().songDispatcher.player.pause();
+	},
 };
+
+module.exports = pauseCommand;

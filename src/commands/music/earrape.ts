@@ -1,45 +1,37 @@
-import { Client, CommandoMessage, Command } from "discord.js-commando-it";
-import { MusicGuild } from "../../index";
+import { Command, eMessage } from '../../config';
+import { AudioResource } from '@discordjs/voice';
+import { logger } from '../../logger';
 
+const earrapeCommand : Command = {
+	name: 'earrape',
+	description: 'Alza il volume di tantissimo per un secondo',
 
-module.exports = class LeaveCommand extends Command {
-  constructor(client : Client) {
-    super(client, {
-      name: 'earrape',
-      aliases: ['earrape'],
-      group: 'music',
-      memberName: 'earrape',
-      guildOnly: true,
-      description: 'EARRAPE'
-    });
-  }
+	async run(message : eMessage) {
+		const voiceChannel = message.member.voice.channel;
+		if (!voiceChannel) {
+			logger.warn('User isn\'t in a voice channel');
+			return message.reply('Devi essere in un canale plebeo');
+		}
 
-  run(message : CommandoMessage) {
-    try{
-        const voiceChannel = message.member.voice.channel;
-        if (!voiceChannel) return message.reply('Devi essere in un canale plebeo');
+		if(!message.getMusicHandler()) {
+			logger.warn('Guild music handler isn\'t playing anything');
+			return message.reply('Bruh non sto riproducendo niente');
+		}
 
-        if (
-            typeof (((message.guild as any)as MusicGuild).musicData.songDispatcher as any) == 'undefined' ||
-            ((message.guild as any)as MusicGuild).musicData.songDispatcher == null
-        ) {
-            return message.reply('Bruh non stai riproducendo niente');
-        } else if (voiceChannel.id !== message.guild.me.voice.channel.id) {
-            message.reply(
-              `Devi essere nel mio stesso canale plebeo`
-            );
-            return;
-        }
-        
+		if(voiceChannel.id != message.guild.me.voice.channel.id) {
+			logger.warn('User isn\'t in current voice channel');
+			return message.reply('Devi essere nel mio stesso canale plebeo');
+		}
 
-        const previousvolume = ((message.guild as any)as MusicGuild).musicData.volume * 2;
-        const volume = require("./volume");
-        const volumecommand = new volume(message.client);
-        volumecommand.run(message, { wantedVolume : 69420} );
-        setTimeout(function(){ volumecommand.run(message, { wantedVolume : previousvolume} ); }, 3000);
-      }
-      catch(e){
-        console.error(e);
-      }
-  }
+		const previousVolume = message.getMusicHandler().volume;
+		((message.getMusicHandler().songDispatcher.player.state as any).resource as AudioResource).volume.setVolume(69420);
+		logger.info('Set the volume at 69420');
+
+		setTimeout(() => {
+			((message.getMusicHandler().songDispatcher.player.state as any).resource as AudioResource).volume.setVolume(previousVolume);
+			logger.info(`Set the volume at ${previousVolume}`);
+		}, 1000);
+	},
 };
+
+module.exports = earrapeCommand;

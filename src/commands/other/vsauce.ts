@@ -1,28 +1,22 @@
-import { CommandoMessage, Command, CommandoClient } from "discord.js-commando-it";
+import { Command } from '../../config';
+import { Message, MessageEmbed } from 'discord.js';
+import fs from 'fs';
 
-import * as  fs from 'fs';
+const vsauceCommand : Command = {
+	name: 'vsauce',
+	description: 'Invia un video di vsauce',
 
-module.exports = class MotivationCommand extends Command {
-  constructor(client : CommandoClient) {
-    super(client, {
-      name: 'vsauce',
-      aliases: ['vsauce, sauce'],
-      group: 'other',
-      memberName: 'vsauce',
-      description: 'ti invia un video di vsauce'
-    });
-  }
-  run(message : CommandoMessage) {
-    // thanks to https://type.fit/api/quotes
+	run(message : Message) {
+		const quotes = JSON.parse(fs.readFileSync('resources/quotes/news.json', 'utf8')).quotes;
 
-    const jsonQuotes = fs.readFileSync(
-      'resources/quotes/vsauce.json',
-      'utf8'
-    );
-    const quoteArray = JSON.parse(jsonQuotes).quotes;
+		const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
 
-    const randomQuote =
-      quoteArray[Math.floor(Math.random() * quoteArray.length)];
-    return message.channel.send(randomQuote.text);
-  }
+		const quoteEmbed = new MessageEmbed()
+			.setTitle(randomQuote.text)
+			.setColor('#ff003c');
+
+		return message.channel.send({ embeds : [ quoteEmbed ] });
+	},
 };
+
+module.exports = vsauceCommand;

@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Crea un bug report per migliorare Eboluigi
+about: Crea un bug report per migliorare Malario
 title: ''
 labels: bug
 assignees: spartacus04

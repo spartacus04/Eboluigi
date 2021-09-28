@@ -1,30 +1,29 @@
-import { CommandoMessage, Command, CommandoClient } from "discord.js-commando-it";
+import { Command } from '../../config';
+import { Message } from 'discord.js';
 
-module.exports = class RandomNumberCommand extends Command {
-  constructor(client : CommandoClient) {
-    super(client, {
-      name: 'random',
-      aliases: ['random-number', 'number-between'],
-      memberName: 'random',
-      group: 'other',
-      description: 'Crea un numero a caso tra i numeri dati',
-      args: [
-        {
-          key: 'min',
-          prompt: 'Numero minimo?',
-          type: 'integer'
-        },
-        {
-          key: 'max',
-          prompt: 'numero massimo?',
-          type: 'integer'
-        }
-      ]
-    });
-  }
+const randomCommand : Command = {
+	name: 'random',
+	aliases: ['random-number', 'number-between'],
+	description: 'Invia un numero a caso tra quelli specificati',
+	args: [
+		{
+			key: 'min',
+			label: 'numero minimo',
+			prompt: 'Inserisci il numero minimo',
+			type: 'integer',
+		},
+		{
+			key: 'max',
+			label: 'numero massimo',
+			prompt: 'Inserisci il numero massimo',
+			type: 'integer',
+		},
+	],
 
-  // @ts-ignore
-  run(message : CommandoMessage, { min, max } : { min : number, max : number}) {
-    message.say("69420 lol");
-  }
+	run(message : Message, { min, max } : { min : number, max : number }) {
+		void min, max;
+		return message.channel.send('69420 lmao');
+	},
 };
+
+module.exports = randomCommand;

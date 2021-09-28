@@ -1,33 +1,27 @@
-import { CommandoMessage, Command, CommandoClient } from "discord.js-commando-it";
-import { MessageEmbed } from 'discord.js';
-import * as fs from 'fs';
+import { Command } from '../../config';
+import { Message, MessageEmbed } from 'discord.js';
+import fs from 'fs';
+import { logger } from '../../logger';
 
-module.exports = class MotivationCommand extends Command {
-  constructor(client : CommandoClient) {
-    super(client, {
-      name: 'motivation',
-      aliases: ['motivational, motivation-quote'],
-      group: 'other',
-      memberName: 'motivation',
-      description: 'ti dice cose motivanti(spero)'
-    });
-  }
-  run(message : CommandoMessage) {
-    // thanks to https://type.fit/api/quotes
+const motivationCommand : Command = {
+	name: 'motivation',
+	aliases: ['motivational', 'motivation-quote'],
+	description: 'Risponde con una frase motivante (spero)',
 
-    const jsonQuotes = fs.readFileSync(
-      'resources/quotes/motivational.json',
-      'utf8'
-    );
-    const quoteArray = JSON.parse(jsonQuotes).quotes;
+	run(message : Message) {
+		const quotes = JSON.parse(fs.readFileSync('resources/quotes/motivational.json', 'utf8')).quotes;
 
-    const randomQuote =
-      quoteArray[Math.floor(Math.random() * quoteArray.length)];
+		const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
 
-    const quoteEmbed = new MessageEmbed()
-      .setTitle(randomQuote.author)
-      .setDescription(randomQuote.text)
-      .setColor('#ff003c');
-    return message.channel.send(quoteEmbed);
-  }
+		logger.info(`sending quote: ${randomQuote.author}`);
+
+		const quoteEmbed = new MessageEmbed()
+			.setTitle(randomQuote.author)
+			.setDescription(randomQuote.text)
+			.setColor('#ff003c');
+
+		return message.channel.send({ embeds : [ quoteEmbed ] });
+	},
 };
+
+module.exports = motivationCommand;

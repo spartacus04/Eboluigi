@@ -1,51 +1,53 @@
-import { Client, CommandoMessage, Command } from "discord.js-commando-it";
-import { MusicGuild } from "../../index";
+import { Command, eMessage } from '../../config';
+import { logger } from '../../logger';
 
-module.exports = class LoopCommand extends Command {
-  constructor(client : Client) {
-    super(client, {
-      name: 'loop',
-      group: 'music',
-      memberName: 'loop',
-      guildOnly: true,
-      description: 'Loopa una canzone',
-      args: [
-        {
-          key: 'numOfTimesToLoop',
-          default: 1,
-          type: 'integer',
-          prompt: "Quante volte dev'essere ripetuta?"
-        }
-      ]
-    });
-  }
+const loopCommand : Command = {
+	name: 'loop',
+	description: 'Ripete una canzone',
+	args: [
+		{
+			key: 'numOfTimesToLoop',
+			label: 'numero di volte',
+			prompt: 'Per quante volte deve essere ripetuta?',
+			type: 'integer',
+		},
+	],
 
-  run(message : CommandoMessage, { numOfTimesToLoop } : {numOfTimesToLoop : number}) {
-    if (!((message.guild as any)as MusicGuild).musicData.isPlaying) {
-      return message.say('Bruh non stai riproducendo niente');
-    } else if (
-      ((message.guild as any)as MusicGuild).musicData.isPlaying
-    ) {
-      return message.say('Non puoi farlo durante il trivia!');
-    } else if (
-      message.member.voice.channel.id !== message.guild.me.voice.channel.id
-    ) {
-      message.reply(
-        `Devi essere nel mio stesso canale plebeo`
-      );
-      return;
-    }
+	run(message : eMessage, { numOfTimesToLoop } : { numOfTimesToLoop : number}) {
+		const voiceChannel = message.member.voice.channel;
+		if (!voiceChannel) {
+			logger.warn('User isn\'t in a voice channel');
+			return message.reply('Devi essere in un canale plebeo');
+		}
 
-    for (let i = 0; i < numOfTimesToLoop; i++) {
-      ((message.guild as any)as MusicGuild).musicData.queue.unshift(((message.guild as any)as MusicGuild).musicData.nowPlaying);
-    }
+		if(!message.getMusicHandler()) {
+			logger.warn('Guild music handler isn\'t playing anything');
+			return message.reply('Bruh non sto riproducendo niente');
+		}
 
-    // prettier-ignore
-    message.channel.send(
-      `${((message.guild as any)as MusicGuild).musicData.nowPlaying.title} verrà loopato per ${numOfTimesToLoop} ${
-        (numOfTimesToLoop == 1) ? 'volta' : 'volte'
-      }`
-    );
-    return;
-  }
+		if(voiceChannel.id != message.guild.me.voice.channel.id) {
+			logger.warn('User isn\'t in current voice channel');
+			return message.reply('Devi essere nel mio stesso canale plebeo');
+		}
+
+		if(numOfTimesToLoop < 1) {
+			logger.warn(`Argument numOfTimesToLoop isn't valid: ${numOfTimesToLoop}`);
+			return message.reply('Inserisci un numero valido');
+		}
+
+		logger.info(`Adding current playing song to the beginning of the queue ${numOfTimesToLoop} times`);
+		for(let i = 0; i < numOfTimesToLoop; i++) {
+			message.getMusicHandler().queue.unshift(message.getMusicHandler().nowPlaying);
+		}
+
+		logger.verbose(message.getMusicHandler().queue);
+
+		return message.channel.send(
+			`${message.getMusicHandler().nowPlaying.title} verrà loopato per ${numOfTimesToLoop} ${
+				(numOfTimesToLoop == 1) ? 'volta' : 'volte'
+			}`
+		);
+	},
 };
+
+module.exports = loopCommand;

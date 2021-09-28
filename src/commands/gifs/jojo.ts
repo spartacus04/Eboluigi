@@ -1,32 +1,28 @@
-import * as fs from 'fs';
-import { Command, CommandoMessage, CommandoClient } from 'discord.js-commando-it';
+import { Command } from '../../config';
+import { Message } from 'discord.js';
+import fs from 'fs';
+import { logger } from '../../logger';
 
-module.exports = class JojoCommand extends Command {
-  constructor(client : CommandoClient) {
-    super(client, {
-      name: 'jojo',
-      aliases: ['jojo-gif', 'jojo-gifs'],
-      group: 'gifs',
-      memberName: 'jojo',
-      description: 'Replies with a random jojo gif!',
-      throttling: {
-        usages: 20,
-        duration: 8
-      }
-    });
-  }
+const jojoCommand : Command = {
+	name: 'jojo',
+	aliases: ['jojo-gif', 'jojo-gifs'],
+	description: 'Invia una gif di Jojo',
 
-  // @ts-ignore
-  run(message : CommandoMessage) {
-    try {
-      const linkArray = fs
-        .readFileSync('resources/gifs/jojolinks.txt', 'utf8')
-        .split('\n');
-      const link = linkArray[Math.floor(Math.random() * linkArray.length)];
-      return message.say(link);
-    } catch (e) {
-      message.say('Non ho trovato il gif <:tasbien:712705754678951987>');
-      return console.error(e);
-    }
-  }
+	async run(message : Message) {
+		await message.channel.sendTyping();
+		try {
+			const linkArray = fs
+				.readFileSync('resources/gifs/jojolinks.txt', 'utf8')
+				.split('\n');
+			const link = linkArray[Math.floor(Math.random() * linkArray.length)];
+			logger.verbose(link);
+			await message.channel.send(link);
+		}
+		catch (err) {
+			message.channel.send('Non ho trovato una gif <:tasbien:712705754678951987>');
+			logger.error(err);
+		}
+	},
 };
+
+module.exports = jojoCommand;

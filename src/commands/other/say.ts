@@ -1,31 +1,25 @@
-import { CommandoMessage, Command, CommandoClient } from "discord.js-commando-it";
-// @ts-ignore
+import { Command } from '../../config';
+import { Message } from 'discord.js';
 import zalgo from 'to-zalgo';
 
-module.exports = class SayCommand extends Command {
-  constructor(client : CommandoClient) {
-    super(client, {
-      name: 'say',
-      aliases: ['make-me-say', 'print', 'zalgo'],
-      memberName: 'say',
-      group: 'other',
-      description: 'Ripeto cio che dici in modo maledetto',
-      args: [
-        {
-          key: 'text',
-          prompt: 'Cosa vuoi farmi ripetere?',
-          type: 'string'
-        }
-      ]
-    });
-  }
+const sayCommand : Command = {
+	name: 'say',
+	description: 'Ripeto cio che scrivi in zalgo',
+	args: [
+		{
+			key: 'text',
+			label: 'testo da ripetere',
+			prompt: 'Cosa vuoi farmi ripetere?',
+			type: 'string',
+		},
+	],
 
-  run(message : CommandoMessage, { text } : { text : string }) {
-    if(text.toLowerCase() == "eboluigi lesbico"){
-      return message.say("i tuoi insulti da comune mortale sono patetici");
-    }
-    else{
-      return message.say(zalgo(text));
-    }
-  }
+	run(message : Message, { text } : { text : string }) {
+		if(text.toLowerCase() == 'eboluigi lesbico') {
+			return message.channel.send('i tuoi insulti da comune mortale sono patetici');
+		}
+		return message.channel.send(zalgo(text, { up: true, middle: true, down: true, size: 'maxi' }));
+	},
 };
+
+module.exports = sayCommand;

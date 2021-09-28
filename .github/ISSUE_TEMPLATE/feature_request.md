@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Suggerisci un idea per migliorare Eboluigi
+about: Suggerisci un idea per migliorare Malario
 title: ''
 labels: enhancement
 assignees: spartacus04

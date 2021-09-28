@@ -1,23 +1,14 @@
-import { CommandoMessage, Command, CommandoClient } from "discord.js-commando-it";
+import { Command } from '../../config';
+import { Message } from 'discord.js';
 
-module.exports = class RandomNumberCommand extends Command {
-  constructor(client : CommandoClient) {
-    super(client, {
-      name: 'ynet',
-      aliases: ['ynet'],
-      memberName: 'ynet',
-      group: 'other',
-      description: 'Invia ciuchino'
-    });
-  }
+const bababuiCommand : Command = {
+	name: 'ynet',
+	description: 'Invia una notizia israeliana recente',
 
-  //@ts-ignore
-  run(message : CommandoMessage) {
-    message.channel.send({
-        files: [{
-            attachment: "https://raw.githubusercontent.com/spartacus04/Eboluigi/master/resources/images/ynet.jpg",
-            name: 'ynet.png'
-        }]
-    })
-  }
+	async run(message : Message) {
+		await message.channel.sendTyping();
+		await message.channel.send({ files: ['resources/images/ynet.jpg'] });
+	},
 };
+
+module.exports = bababuiCommand;

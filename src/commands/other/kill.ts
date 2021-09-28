@@ -1,18 +1,14 @@
-import { CommandoMessage, Command, CommandoClient } from "discord.js-commando-it";
+import { Command } from '../../config';
+import { Message } from 'discord.js';
 
-module.exports = class RandomNumberCommand extends Command {
-  constructor(client : CommandoClient) {
-    super(client, {
-      name: 'kill-me-pls',
-      aliases: ['kill-me-pls', 'killmepls', 'kill-me-please'],
-      memberName: 'kill-me-pls',
-      group: 'other',
-      description: 'Invia un Meme Wholesome'
-    });
-  }
+const killCommand : Command = {
+	name: 'killmepls',
+	aliases: ['kill-me-pls'],
+	description: 'Invia un meme Wholesome',
 
-  //@ts-ignore
-  run(message : CommandoMessage) {
-    message.say("Ora conosco la tua posizione")
-  }
+	async run(message : Message) {
+		return message.channel.send('Ora conosco la tua posizione');
+	},
 };
+
+module.exports = killCommand;

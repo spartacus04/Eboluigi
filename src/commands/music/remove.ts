@@ -1,43 +1,45 @@
-import { Client, CommandoMessage, Command } from "discord.js-commando-it";
-import { MusicGuild } from "../../index";
+import { Command, eMessage } from '../../config';
+import { logger } from '../../logger';
 
-module.exports = class RemoveSongCommand extends Command {
-  constructor(client : Client) {
-    super(client, {
-      name: 'remove',
-      memberName: 'remove',
-      group: 'music',
-      description: 'Rimuove una canzone dalla queue',
-      guildOnly: true,
-      args: [
-        {
-          key: 'songNumber',
-          prompt: 'Quale numero vuoi rimuovere dalla queue?',
-          type: 'integer'
-        }
-      ]
-    });
-  }
-  run(message : CommandoMessage, { songNumber } : {songNumber : number}) {
-    if (songNumber < 1 && songNumber >= ((message.guild as any)as MusicGuild).musicData.queue.length) {
-      return message.reply('Inserisci un numero valido');
-    }
-    var voiceChannel = message.member.voice.channel;
-    if (!voiceChannel) return message.reply('Devi essere in un canale plebeo');
+const removeSongCommand : Command = {
+	name: 'remove',
+	description: 'Rimuove una canzone dalla queue',
+	args: [
+		{
+			key: 'songNumber',
+			label: 'numero della canzone',
+			prompt: 'Inserisci il numero della canzone',
+			type: 'integer',
+		},
+	],
 
-    if (
-      typeof ((message.guild as any)as MusicGuild).musicData.songDispatcher == 'undefined' ||
-      ((message.guild as any)as MusicGuild).musicData.songDispatcher == null
-    ) {
-      return message.reply('Bruh non stai riproducendo niente');
-    } else if (voiceChannel.id !== message.guild.me.voice.channel.id) {
-      message.reply(
-        `Devi essere nel mio stesso canale plebeo`
-      );
-      return;
-    }
+	run(message : eMessage, { songNumber } : { songNumber : number}) {
+		const voiceChannel = message.member.voice.channel;
+		if (!voiceChannel) {
+			logger.warn('User isn\'t in a voice channel');
+			return message.reply('Devi essere in un canale plebeo');
+		}
 
-    ((message.guild as any)as MusicGuild).musicData.queue.splice(songNumber - 1, 1);
-    return message.say(`Rimossa la canzone numero ${songNumber} dalla queue`);
-  }
+		if(!message.getMusicHandler()) {
+			logger.warn('Guild music handler isn\'t playing anything');
+			return message.reply('Bruh non sto riproducendo niente');
+		}
+
+		if(voiceChannel.id != message.guild.me.voice.channel.id) {
+			logger.warn('User isn\'t in current voice channel');
+			return message.reply('Devi essere nel mio stesso canale plebeo');
+		}
+
+		if(songNumber < 1 || songNumber >= message.getMusicHandler().queue.length) {
+			logger.warn(`Argument songNumber isn't valid: ${songNumber}`);
+			return message.reply('Inserisci un numero valido');
+		}
+
+		logger.info(`Removing song ${songNumber} from queue`);
+		const removedSong = message.getMusicHandler().queue.splice(songNumber - 1, 1);
+
+		return message.channel.send(`Ho rimosso la canzone ${removedSong[0].title} dalla queue`);
+	},
 };
+
+module.exports = removeSongCommand;

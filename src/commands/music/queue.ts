@@ -1,35 +1,35 @@
-import { Client, CommandoMessage, Command } from "discord.js-commando-it";
-import { MusicGuild } from "../../index";
+import { Command, eMessage } from '../../config';
 import { MessageEmbed } from 'discord.js';
+import { logger } from '../../logger';
+import { videoObj } from '../../musicHandler';
 
-module.exports = class QueueCommand extends Command {
-  constructor(client : Client) {
-    super(client, {
-      name: 'queue',
-      aliases: ['song-list', 'next-songs'],
-      group: 'music',
-      memberName: 'queue',
-      guildOnly: true,
-      description: 'Mostra le canzoni in coda'
-    });
-  }
+const queueCommand : Command = {
+	name: 'queue',
+	aliases: ['song-list', 'next-songs'],
+	description: 'Mostra le canzoni in coda',
 
-  run(message : CommandoMessage) {
-    if (((message.guild as any)as MusicGuild).musicData.queue.length == 0)
-      return message.say('Bruh non stai riproducendo niente');
-    const titleArray : any[] = [];
-    /* eslint-disable */
-    // display only first 10 items in queue
-    ((message.guild as any)as MusicGuild).musicData.queue.slice(0, 10).forEach((obj : any) => {
-      titleArray.push(obj.title);
-    });
-    /* eslint-enable */
-    var queueEmbed = new MessageEmbed()
-      .setColor('#ff7373')
-      .setTitle(`Queue - ${((message.guild as any)as MusicGuild).musicData.queue.length} oggetti`);
-    for (let i = 0; i < titleArray.length; i++) {
-      queueEmbed.addField(`${i + 1}:`, `${titleArray[i]}`);
-    }
-    return message.say(queueEmbed);
-  }
+	async run(message : eMessage) {
+		await message.channel.sendTyping();
+		const titleArray : string[] = [];
+
+		if(!message.getMusicHandler()) {
+			logger.warn('Guild music handler isn\'t playing anything');
+			return message.reply('Bruh non sto riproducendo niente');
+		}
+
+		logger.info('Showing only first 10 elements of queue');
+		message.getMusicHandler().queue.slice(0, 10).forEach((obj : videoObj) => {
+			titleArray.push(obj.title);
+		});
+
+		const queueEmbed = new MessageEmbed()
+			.setColor('#ff7373')
+			.setTitle(`Queue - ${message.getMusicHandler().queue.length} oggetti`);
+		for (let i = 0; i < titleArray.length; i++) {
+			queueEmbed.addField(`${i + 1}:`, `${titleArray[i]}`);
+		}
+		await message.channel.send({ embeds: [queueEmbed] });
+	},
 };
+
+module.exports = queueCommand;

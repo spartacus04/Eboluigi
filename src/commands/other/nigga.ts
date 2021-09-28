@@ -1,19 +1,14 @@
-import { CommandoMessage, Command, CommandoClient } from "discord.js-commando-it";
+import { Command } from '../../config';
+import { Message } from 'discord.js';
 
+const niggaCommand : Command = {
+	name: 'nigga',
+	description: 'Invia un N-Word pass',
 
-module.exports = class RandomNumberCommand extends Command {
-  constructor(client : CommandoClient) {
-    super(client, {
-      name: 'nigga',
-      aliases: ['nigga'],
-      memberName: 'nigga',
-      group: 'other',
-      description: 'Invia un N-Word Pass'
-    });
-  }
-
-  //@ts-ignore
-  run(message : CommandoMessage) {
-    message.say('Eboluigi dice: il razzismo è più divertente quando non hai un n-word pass');
-  }
+	async run(message : Message) {
+		await message.channel.sendTyping();
+		return await message.channel.send('Eboluigi dice: il razzismo è più divertente quando non hai un n-word pass');
+	},
 };
+
+module.exports = niggaCommand;

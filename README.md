@@ -1,56 +1,56 @@
 # Eboluigi
-![Eboluigi](https://raw.githubusercontent.com/spartacus04/Eboluigi/master/icon.ico)
+![Eboluigi](https://raw.githubusercontent.com/spartacus04/Malario/master/icon.ico)
 
 
 Eboluigi è il secondo bot del server discord del prosciutthanos, può fare molte cose tra le quali
 
   - Inviare dei meme da reddit
-  - Riprodurre musica da soundcloud
+  - Riprodurre musica da Soundcloud
   - Inviare Gif varie
 
-Il bot è basato su  https://github.com/spartacus04/Malario
-
 # Comandi
-### Gif
-  - animegif: Risponde con una gif di saitama
-  - jojo: Risponde con una gif di Jojo maledetta
 
-### Musica
-  - earrape: Cambia il volume in 69420 per un paio di secondi
-  - stop: Lascia il canale e cancella la queue
-  - loop <numero di volte>: Ripete una canzone per x volte
-  - loopqueue <numero di volte>: Ripete la queue per x volte
-  - lyrics [canzone]: Dice le liriche di una canzone dato il nome oppure la musica in riproduzione
-  - np: Dice la canzone in riproduzione
-  - pause: Mette in pausa la riproduzione
-  - play <url/nome>: Riproduce un brano/playlist da soundcloud, altrimenti cerca il video e lo riproduce
-  - queue: Mostra gli elementi nella queue
-  - remove <numero canzone>:Rimuove una canzone dalla queue
-  - resume: Riprende la riproduzione di una canzone in pausa
-  - shuffle: Mescola la queue
-  - skip: Salta la canzone
-  - skipall: Salta tutte le canzoni
-  - skipto <numero canzone>: Salta ogni canzone fino a quella selezionata
-  - volume <volume>: Imposta il volume
-  
-### Altro
-  - cat: Invia l'immagine di un cane
-  - diego: Invia un diego
-  - fortune: Ti dirà qual'è la tua fortuna
-  - insult: Genera un insulto a caso in italiano
-  - killmepls: Invia un meme wholesome
-  - meme: Invia un meme a caso
-  - motivation: Invia una frase motivante
-  - nigga: Invia un N-Word pass
-  - random <minimo> <massimo>: Sceglie un numero a caso tra quelli dati
-  - say <testo>: Ripete il testo dato in zalgo
-  - shrek: Invia una copypasta della YTP shrekkk
-  - tpose: Invia una immagine di persone in tpose deepfried
-  - uptime: Risponde con quanto tempo il bot è stato online
-  - vsauce: Invia un video a caso di VSauce
-  - whomademe: Risponde con informazioni sul creatore
-  - worldnews: Risponde con una notizia recente
-  - ynet: Israele
-### Utility
-  - help: Invia tutti i comandi del bot
-  - ping: Controlla il ping del bot
+### gifs
+  - m.animegif/anime-gif/anime-gifs : Invia una gif di saitama
+  - m.cat : Invia un immagine di un cane
+  - m.jojo/jojo-gif/jojo-gifs : Invia una gif di Jojo
+
+### guild
+  - m.ban/ban-member/ban-hammer <utente da bannare> <motivo del ban> : Bandisce un membro del server
+  - m.carcere/jail <utente da carcerare> : Incarcera o scarcera un membro del server
+  - m.eval/evaluate <codice da eseguire> : Esegue javascript
+  - m.help : Invia dei comandi di aiuto
+  - m.kick/kick-member/throw <utente da espellere> <motivo dell'espulsione> : Espelle un membro del server
+  - m.ping : Invia il ping del bot
+  - m.prune/delete-messages/bulk-delete <numero di messaggi> : Bandisce un membro del server
+
+### music
+  - m.earrape : Alza il volume di tantissimo per un secondo
+  - m.loop <numero di volte> : Ripete una canzone
+  - m.nowplaying/np/currently-playing/now-playing : Lascia un canale e cancella la queue
+  - m.pause/resume/toggle-pause : Mette la riproduzione in pausa o la riprende
+  - m.play/play-song/add <link del video/playlist o video da cercare> : Riproduce video o playlist da soundcloud
+  - m.queue/song-list/next-songs : Mostra le canzoni in coda
+  - m.remove <numero della canzone> : Rimuove una canzone dalla queue
+  - m.shuffle : Riproduce la queue in modo casuale
+  - m.skip/skip-song/advance-song : Salta la canzone
+  - m.skipto <numero della canzone> : Salta fino a una certa canzone nella queue
+  - m.stop/end/leave/zittatroiaccia/zitta-troiaccia : Lascia un canale e cancella la queue
+  - m.volume/change-volume <volume> : Cambia o mostra il volume
+
+### other
+  - m.bababui : Invia un bababui
+  - m.diego : Invia un Diego
+  - m.fortune : Invia una frase da biscotto della fortuna
+  - m.insult : Invia un insulto in italiano
+  - m.killmepls/kill-me-pls : Invia un meme Wholesome
+  - m.meme/cursedimage : Invia una cursed image
+  - m.motivation/motivational/motivation-quote : Risponde con una frase motivante (spero)
+  - m.nigga : Invia un N-Word pass
+  - m.random/random-number/number-between <numero minimo> <numero massimo> : Invia un numero a caso tra quelli specificati
+  - m.say <testo da ripetere> : Ripeto cio che scrivi in zalgo
+  - m.tpose : Risponde con una T-Pose
+  - m.vsauce : Invia un video di vsauce
+  - m.whomademe : Invia info riguardo al creatore
+  - m.world-news/worldnews : Invia un meme sulle notizie
+  - m.ynet : Invia una notizia israeliana recente
