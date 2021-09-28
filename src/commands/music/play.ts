@@ -192,7 +192,11 @@ const playSong = async (queue : videoObj[], message : eMessage) => {
 
 	const dispatcher = connection.subscribe(player);
 
-	player.on(AudioPlayerStatus.Playing, () => {
+	let fixFlag = true;
+
+	player.on(AudioPlayerStatus.Playing, async () => {
+		if(!fixFlag) return;
+		fixFlag = false;
 		logger.info('Started resource playback');
 		message.getMusicHandler().songDispatcher = dispatcher;
 		logger.info(`Setting previous volume ${message.getMusicHandler().volume}`);
@@ -212,7 +216,7 @@ const playSong = async (queue : videoObj[], message : eMessage) => {
 
 		if (queue[1]) videoEmbed.addField('Prossima canzone:', queue[1].title);
 
-		message.channel.send({ embeds: [ videoEmbed ] });
+		await message.channel.send({ embeds: [ videoEmbed ] });
 
 		message.getMusicHandler().nowPlaying = queue[0];
 
@@ -257,6 +261,7 @@ const playSong = async (queue : videoObj[], message : eMessage) => {
 const constructVideoObj = (video : TrackInfo, voiceChannel : VoiceChannel, user : User) : videoObj => {
 	let duration = formatDuration(video.duration);
 	if(duration == '00:00') duration = 'livestream';
+	console.log(video.artwork_url);
 
 	return {
 		url: video.permalink_url,
@@ -271,15 +276,11 @@ const constructVideoObj = (video : TrackInfo, voiceChannel : VoiceChannel, user 
 };
 
 const formatDuration = (duration : number) : string => {
-	let hours = `${duration % 3600}`;
-	let minutes = `${duration % 3600 / 60}`;
-	let seconds = `${duration % 3600 % 60}`;
-
-	if (+hours < 10 && +hours > 0) hours = '0' + hours + ':';
-	if(+hours == 0) hours = '';
-	if (+minutes < 10) minutes = '0' + minutes;
-	if (+seconds < 10) seconds = '0' + seconds;
-	return `${hours}${minutes}:${seconds}`;
+	let formattedDate = new Date(duration).toISOString().substr(11, 8);
+	while(formattedDate.startsWith('00:')) {
+		formattedDate = formattedDate.substr(3);
+	}
+	return formattedDate;
 };
 
 module.exports = playCommand;

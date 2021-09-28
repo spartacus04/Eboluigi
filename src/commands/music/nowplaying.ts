@@ -2,6 +2,7 @@ import { AudioResource } from '@discordjs/voice';
 import { MessageEmbed } from 'discord.js';
 import { Command, eMessage } from '../../config';
 import { logger } from '../../logger';
+import { videoObj } from '../../musicHandler';
 
 const npCommand : Command = {
 	name: 'nowplaying',
@@ -42,29 +43,15 @@ const npCommand : Command = {
 };
 
 
-const playbackBar = (message : eMessage, video : any) : string => {
+const playbackBar = (message : eMessage, video : videoObj) : string => {
 	const passedTimeInMS = ((message.getMusicHandler().songDispatcher.player.state as any).resource as AudioResource).playbackDuration;
 	const passedTimeFormatted = formatDuration(passedTimeInMS / 1000);
 
 	const totalDurationObj = video.rawDuration;
-	const totalDurationFormatted = formatDuration(
-		totalDurationObj
-	);
+	const totalDurationFormatted = formatDuration(totalDurationObj);
 
-	let totalDurationInMS = 0;
-	Object.keys(totalDurationObj).forEach(function(key) {
-		if (key == 'hours') {
-			totalDurationInMS = totalDurationInMS + totalDurationObj[key] * 3600000;
-		}
-		else if (key == 'minutes') {
-			totalDurationInMS = totalDurationInMS + totalDurationObj[key] * 60000;
-		}
-		else if (key == 'seconds') {
-			totalDurationInMS = totalDurationInMS + totalDurationObj[key] * 100;
-		}
-	});
 	const playBackBarLocation = Math.round(
-		(passedTimeInMS / totalDurationInMS) * 10
+		(passedTimeInMS / video.rawDuration) * 10
 	);
 	let playBack = '';
 	for (let i = 1; i < 21; i++) {

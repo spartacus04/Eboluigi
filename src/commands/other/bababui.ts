@@ -3,6 +3,7 @@ import { Message } from 'discord.js';
 
 const bababuiCommand : Command = {
 	name: 'bababui',
+	aliases: ['stocazzo'],
 	description: 'Invia un bababui',
 
 	async run(message : Message) {

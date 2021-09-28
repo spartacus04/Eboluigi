@@ -1,5 +1,5 @@
 # Eboluigi
-![Eboluigi](https://raw.githubusercontent.com/spartacus04/Eboluigi/master/icon.ico)
+![Eboluigi](https://raw.githubusercontent.com/spartacus04/Malario/master/icon.ico)
 
 
 Eboluigi è il secondo bot del server discord del prosciutthanos, può fare molte cose tra le quali
@@ -39,7 +39,7 @@ Eboluigi è il secondo bot del server discord del prosciutthanos, può fare molt
   - m.volume/change-volume <volume> : Cambia o mostra il volume
 
 ### other
-  - m.bababui : Invia un bababui
+  - m.bababui/stocazzo : Invia un bababui
   - m.diego : Invia un Diego
   - m.fortune : Invia una frase da biscotto della fortuna
   - m.insult : Invia un insulto in italiano
