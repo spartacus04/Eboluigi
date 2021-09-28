@@ -1,5 +1,5 @@
 # Eboluigi
-![Eboluigi](https://raw.githubusercontent.com/spartacus04/Malario/master/icon.ico)
+![Eboluigi](https://raw.githubusercontent.com/spartacus04/Eboluigi/master/icon.ico)
 
 
 Eboluigi è il secondo bot del server discord del prosciutthanos, può fare molte cose tra le quali
