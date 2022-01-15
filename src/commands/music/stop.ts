@@ -1,4 +1,5 @@
-import { Command, eMessage } from '../../config';
+import { Message } from 'discord.js';
+import { Command, getMusicHandler } from '../../config';
 import { logger } from '../../logger';
 
 const stopCommand : Command = {
@@ -6,14 +7,14 @@ const stopCommand : Command = {
 	aliases: ['end', 'leave', 'zittatroiaccia', 'zitta-troiaccia'],
 	description: 'Lascia un canale e cancella la queue',
 
-	run(message : eMessage) {
+	run(message : Message) {
 		const voiceChannel = message.member.voice.channel;
 		if (!voiceChannel) {
 			logger.warn('User isn\'t in a voice channel');
 			return message.reply('Devi essere in un canale plebeo');
 		}
 
-		if(!message.getMusicHandler()) {
+		if(!getMusicHandler(message.guild.id)) {
 			logger.warn('Guild music handler isn\'t playing anything');
 			return message.reply('Bruh non sto riproducendo niente');
 		}
@@ -24,9 +25,9 @@ const stopCommand : Command = {
 		}
 
 		logger.info('Emptying queue');
-		message.getMusicHandler().queue = [];
+		getMusicHandler(message.guild.id).queue = [];
 		logger.info('Stopped current playback');
-		message.getMusicHandler().songDispatcher.player.stop();
+		getMusicHandler(message.guild.id).songDispatcher.player.stop();
 	},
 };
 

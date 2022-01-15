@@ -1,19 +1,20 @@
-import { Command, eMessage } from '../../config';
+import { Command, getMusicHandler } from '../../config';
 import { AudioResource } from '@discordjs/voice';
 import { logger } from '../../logger';
+import { Message } from 'discord.js';
 
 const earrapeCommand : Command = {
 	name: 'earrape',
 	description: 'Alza il volume di tantissimo per un secondo',
 
-	async run(message : eMessage) {
+	async run(message : Message) {
 		const voiceChannel = message.member.voice.channel;
 		if (!voiceChannel) {
 			logger.warn('User isn\'t in a voice channel');
 			return message.reply('Devi essere in un canale plebeo');
 		}
 
-		if(!message.getMusicHandler()) {
+		if(!getMusicHandler(message.guild.id).isPlaying) {
 			logger.warn('Guild music handler isn\'t playing anything');
 			return message.reply('Bruh non sto riproducendo niente');
 		}
@@ -23,12 +24,12 @@ const earrapeCommand : Command = {
 			return message.reply('Devi essere nel mio stesso canale plebeo');
 		}
 
-		const previousVolume = message.getMusicHandler().volume;
-		((message.getMusicHandler().songDispatcher.player.state as any).resource as AudioResource).volume.setVolume(69420);
+		const previousVolume = getMusicHandler(message.guild.id).volume;
+		((getMusicHandler(message.guild.id).songDispatcher.player.state as any).resource as AudioResource).volume.setVolume(69420);
 		logger.info('Set the volume at 69420');
 
 		setTimeout(() => {
-			((message.getMusicHandler().songDispatcher.player.state as any).resource as AudioResource).volume.setVolume(previousVolume);
+			((getMusicHandler(message.guild.id).songDispatcher.player.state as any).resource as AudioResource).volume.setVolume(previousVolume);
 			logger.info(`Set the volume at ${previousVolume}`);
 		}, 1000);
 	},

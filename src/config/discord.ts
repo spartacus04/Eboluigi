@@ -18,7 +18,7 @@ export interface Command{
 
     args?: argument[],
 
-    run : (message : Message & eMessage, args ?: any) => Promise<any>
+    run : (message : Message, args ?: any) => Promise<any>
 }
 
 export class eClient extends Client {
@@ -26,13 +26,9 @@ export class eClient extends Client {
     groups: string[];
 }
 
-export class eMessage extends Message {
-	getMusicHandler() : musicGuild {
-		return music.get(this.guildId);
-	}
-
-    client : eClient;
-}
+export const getMusicHandler = (guildId : string) : musicGuild => {
+	return music.get(guildId);
+};
 
 export const client = new eClient({
 	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_TYPING, Intents.FLAGS.GUILD_VOICE_STATES],

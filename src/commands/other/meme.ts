@@ -12,7 +12,7 @@ const memeCommand : Command = {
 		try {
 			await message.channel.sendTyping();
 			const res = await fetch('https://www.reddit.com/r/hmmm.json?sort=top&t=week&limit=800');
-			const data = await res.json();
+			const data = await res.json() as any;
 			logger.verbose(data);
 
 			const allowed : any[] = data.data.children.filter((post : any) => !post.data.over_18);

@@ -1,9 +1,9 @@
-import { Command, eMessage } from '../../config';
-import { MessageActionRow, MessageButton, MessageComponentInteraction, MessageEmbed, User, VoiceChannel } from 'discord.js';
-import scdl from 'soundcloud-downloader';
+import { Command, getMusicHandler } from '../../config';
+import { Message, MessageActionRow, MessageButton, MessageComponentInteraction, MessageEmbed, User, VoiceChannel } from 'discord.js';
+import scdl from 'soundcloud-downloader/dist';
 import { TrackInfo } from 'soundcloud-downloader/dist/info';
 import { music, pushToQueue, videoObj } from '../../musicHandler';
-import { AudioPlayerStatus, AudioResource, createAudioPlayer, createAudioResource, joinVoiceChannel, StreamType } from '@discordjs/voice';
+import { AudioPlayerStatus, AudioResource, createAudioPlayer, createAudioResource, DiscordGatewayAdapterCreator, joinVoiceChannel, StreamType } from '@discordjs/voice';
 import { pError } from '../../errors';
 import { logger } from '../../logger';
 
@@ -20,7 +20,7 @@ const playCommand : Command = {
 		},
 	],
 
-	async run(message: eMessage, { query } : { query : string}) {
+	async run(message: Message, { query } : { query : string}) {
 		const voiceChannel = message.member.voice.channel;
 
 		if (!voiceChannel) {
@@ -58,9 +58,9 @@ const playCommand : Command = {
 				}
 			}
 
-			if(!message.getMusicHandler().isPlaying) {
-				message.getMusicHandler().isPlaying = true;
-				playSong(message.getMusicHandler().queue, message);
+			if(!getMusicHandler(message.guild.id).isPlaying) {
+				getMusicHandler(message.guild.id).isPlaying = true;
+				playSong(getMusicHandler(message.guild.id).queue, message);
 			}
 			else{
 				message.channel.send(`Playlist - :musical_note:  ${playlist.label_name} :musical_note: è stata aggiunta alla queue`);
@@ -87,9 +87,9 @@ const playCommand : Command = {
 			logger.info('Pushing video to queue');
 			pushToQueue(message.guildId, constructVideoObj(video, voiceChannel as VoiceChannel, message.member.user));
 
-			if(!message.getMusicHandler().isPlaying) {
-				message.getMusicHandler().isPlaying = true;
-				return playSong(message.getMusicHandler().queue, message);
+			if(!getMusicHandler(message.guild.id).isPlaying) {
+				getMusicHandler(message.guild.id).isPlaying = true;
+				return playSong(getMusicHandler(message.guild.id).queue, message);
 			}
 			else{
 				return message.channel.send(`${video.title} aggiunta alla queue`);
@@ -163,9 +163,9 @@ const playCommand : Command = {
 
 		await songEmbed.delete();
 
-		if(message.getMusicHandler() && !message.getMusicHandler().isPlaying) {
-			message.getMusicHandler().isPlaying = true;
-			return playSong(message.getMusicHandler().queue, message);
+		if(getMusicHandler(message.guild.id) && !getMusicHandler(message.guild.id).isPlaying) {
+			getMusicHandler(message.guild.id).isPlaying = true;
+			return playSong(getMusicHandler(message.guild.id).queue, message);
 		}
 		else {
 			return await message.channel.send(`${video.title} aggiunta alla queue`);
@@ -174,12 +174,12 @@ const playCommand : Command = {
 };
 
 
-const playSong = async (queue : videoObj[], message : eMessage) => {
+const playSong = async (queue : videoObj[], message : Message) => {
 	logger.info('Joining voice channel');
 	const connection = await joinVoiceChannel({
 		channelId: queue[0].voiceChannel.id,
 		guildId: queue[0].voiceChannel.guildId,
-		adapterCreator: queue[0].voiceChannel.guild.voiceAdapterCreator,
+		adapterCreator: queue[0].voiceChannel.guild.voiceAdapterCreator as unknown as DiscordGatewayAdapterCreator,
 	});
 
 	logger.info('Creating resources');
@@ -198,9 +198,9 @@ const playSong = async (queue : videoObj[], message : eMessage) => {
 		if(!fixFlag) return;
 		fixFlag = false;
 		logger.info('Started resource playback');
-		message.getMusicHandler().songDispatcher = dispatcher;
-		logger.info(`Setting previous volume ${message.getMusicHandler().volume}`);
-		((message.getMusicHandler().songDispatcher.player.state as any).resource as AudioResource).volume.setVolume(message.getMusicHandler().volume);
+		getMusicHandler(message.guild.id).songDispatcher = dispatcher;
+		logger.info(`Setting previous volume ${getMusicHandler(message.guild.id).volume}`);
+		((getMusicHandler(message.guild.id).songDispatcher.player.state as any).resource as AudioResource).volume.setVolume(getMusicHandler(message.guild.id).volume);
 
 
 		logger.info('sending user info');
@@ -218,7 +218,7 @@ const playSong = async (queue : videoObj[], message : eMessage) => {
 
 		await message.channel.send({ embeds: [ videoEmbed ] });
 
-		message.getMusicHandler().nowPlaying = queue[0];
+		getMusicHandler(message.guild.id).nowPlaying = queue[0];
 
 		queue.shift();
 		return;
@@ -227,8 +227,8 @@ const playSong = async (queue : videoObj[], message : eMessage) => {
 	player.on(AudioPlayerStatus.Idle, () => {
 		logger.info('Stopped resource playback');
 		try {
-			if(message.getMusicHandler()) {
-				queue = message.getMusicHandler().queue;
+			if(getMusicHandler(message.guild.id)) {
+				queue = getMusicHandler(message.guild.id).queue;
 				if(queue.length > 0) {
 					logger.info('Playing next song');
 					playSong(queue, message);
@@ -236,7 +236,7 @@ const playSong = async (queue : videoObj[], message : eMessage) => {
 				}
 				else {
 					logger.info('Deleting guild musichandler');
-					if(message.getMusicHandler().songDispatcher) message.getMusicHandler().songDispatcher.connection.destroy();
+					if(getMusicHandler(message.guild.id).songDispatcher) getMusicHandler(message.guild.id).songDispatcher.connection.destroy();
 					music.delete(message.guildId);
 				}
 			}
@@ -250,7 +250,7 @@ const playSong = async (queue : videoObj[], message : eMessage) => {
 		logger.error(err);
 		logger.info('Deleting guild musichandler');
 		message.channel.send('Non posso riprodurre quella canzone');
-		message.getMusicHandler().songDispatcher.connection.destroy();
+		getMusicHandler(message.guild.id).songDispatcher.connection.destroy();
 		music.delete(message.guildId);
 		return;
 	});

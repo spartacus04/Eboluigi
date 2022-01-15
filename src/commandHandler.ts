@@ -1,11 +1,11 @@
 import { GuildMember, Message } from 'discord.js';
-import { ADMIN_ROLE_ID, argument, client, Command, eMessage, PREFIX } from './config';
+import { ADMIN_ROLE_ID, argument, client, Command, PREFIX } from './config';
 import { pError } from './errors';
 import { logger } from './logger';
 import { parseArgument } from './util/args';
 
 
-export const handleCommand = async (message: eMessage) : Promise<void> => {
+export const handleCommand = async (message: Message) : Promise<void> => {
 	logger.info(`${message.author.username} issued command: ${message.content}`);
 
 	const parsedCommand = await parseCommand(message.content.trim(), message);

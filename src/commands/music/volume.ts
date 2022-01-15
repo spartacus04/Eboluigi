@@ -1,6 +1,7 @@
-import { Command, eMessage } from '../../config';
+import { Command, getMusicHandler } from '../../config';
 import { AudioResource } from '@discordjs/voice';
 import { logger } from '../../logger';
+import { Message } from 'discord.js';
 
 const volumeCommand : Command = {
 	name: 'volume',
@@ -15,14 +16,14 @@ const volumeCommand : Command = {
 		},
 	],
 
-	async run(message : eMessage, { wantedVolume } : { wantedVolume : string }) {
+	async run(message : Message, { wantedVolume } : { wantedVolume : string }) {
 		const voiceChannel = message.member.voice.channel;
 		if (!voiceChannel) {
 			logger.warn('User isn\'t in a voice channel');
 			return message.reply('Devi essere in un canale plebeo');
 		}
 
-		if(!message.getMusicHandler()) {
+		if(!getMusicHandler(message.guild.id)) {
 			logger.warn('Guild music handler isn\'t playing anything');
 			return message.reply('Bruh non sto riproducendo niente');
 		}
@@ -33,8 +34,8 @@ const volumeCommand : Command = {
 		}
 
 		logger.info(`Setting volume to ${wantedVolume}`);
-		message.getMusicHandler().volume = +wantedVolume;
-		((message.getMusicHandler().songDispatcher.player.state as any).resource as AudioResource).volume.setVolume(+wantedVolume);
+		getMusicHandler(message.guild.id).volume = +wantedVolume;
+		((getMusicHandler(message.guild.id).songDispatcher.player.state as any).resource as AudioResource).volume.setVolume(+wantedVolume);
 
 		await message.channel.send(`Ho messo il volume a: ${wantedVolume}`);
 	},
