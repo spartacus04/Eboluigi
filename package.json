@@ -14,23 +14,23 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "latest",
+    "@types/node": "^17.0.9",
     "@types/node-fetch": "<3.*",
-    "@typescript-eslint/eslint-plugin": "latest",
-    "@typescript-eslint/parser": "latest",
-    "eslint": "latest",
-    "ts-node-dev": "latest"
+    "@typescript-eslint/eslint-plugin": "^5.10.0",
+    "@typescript-eslint/parser": "^5.10.0",
+    "eslint": "^8.7.0",
+    "ts-node-dev": "^1.1.8"
   },
   "dependencies": {
-    "@discordjs/opus": "latest",
-    "@discordjs/voice": "latest",
-    "discord.js": "latest",
-    "dotenv": "latest",
-    "ffmpeg-static": "latest",
-    "libsodium-wrappers": "latest",
-    "node-fetch": "latest",
-    "soundcloud-downloader": "latest",
-    "to-zalgo": "latest",
-    "winston": "latest"
+    "@discordjs/opus": "^0.7.0",
+    "@discordjs/voice": "^0.8.0",
+    "discord.js": "^13.6.0",
+    "dotenv": "^14.2.0",
+    "ffmpeg-static": "^4.4.1",
+    "libsodium-wrappers": "^0.7.9",
+    "node-fetch": "<3.*",
+    "soundcloud-downloader": "^1.0.0",
+    "to-zalgo": "^1.0.1",
+    "winston": "^3.4.0"
   }
 }
