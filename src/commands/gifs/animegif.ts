@@ -12,7 +12,7 @@ const animeGifCommand : Command = {
 		await message.channel.sendTyping();
 		try {
 			const res = await fetch(`https://api.tenor.com/v1/random?key=${TENOR_KEY}&q=saitama&limit=1`);
-			const data = await res.json();
+			const data = await res.json() as any;
 			logger.verbose(data);
 			await message.channel.send(data.results[0].url);
 		}

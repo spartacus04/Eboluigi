@@ -11,7 +11,7 @@ const catCommand : Command = {
 		try{
 			await message.channel.sendTyping();
 			const res = await fetch(`https://api.tenor.com/v1/random?key=${TENOR_KEY}&q=dog&limit=1`);
-			const data = await res.json();
+			const data = await res.json() as any;
 			logger.verbose(data);
 			await message.channel.send(data.results[0].url);
 		}

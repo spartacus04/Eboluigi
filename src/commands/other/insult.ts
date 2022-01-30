@@ -10,7 +10,7 @@ const insultCommand : Command = {
 	async run(message : Message) {
 		try {
 			const res = await fetch('https://evilinsult.com/generate_insult.php?lang=it&type=json');
-			const data = await res.json();
+			const data = await res.json() as any;
 			logger.verbose(data);
 
 			const embed = new MessageEmbed()

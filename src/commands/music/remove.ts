@@ -1,4 +1,5 @@
-import { Command, eMessage } from '../../config';
+import { Message } from 'discord.js';
+import { Command, getMusicHandler } from '../../config';
 import { logger } from '../../logger';
 
 const removeSongCommand : Command = {
@@ -13,14 +14,14 @@ const removeSongCommand : Command = {
 		},
 	],
 
-	run(message : eMessage, { songNumber } : { songNumber : number}) {
+	run(message : Message, { songNumber } : { songNumber : number}) {
 		const voiceChannel = message.member.voice.channel;
 		if (!voiceChannel) {
 			logger.warn('User isn\'t in a voice channel');
 			return message.reply('Devi essere in un canale plebeo');
 		}
 
-		if(!message.getMusicHandler()) {
+		if(!getMusicHandler(message.guild.id)) {
 			logger.warn('Guild music handler isn\'t playing anything');
 			return message.reply('Bruh non sto riproducendo niente');
 		}
@@ -30,13 +31,13 @@ const removeSongCommand : Command = {
 			return message.reply('Devi essere nel mio stesso canale plebeo');
 		}
 
-		if(songNumber < 1 || songNumber >= message.getMusicHandler().queue.length) {
+		if(songNumber < 1 || songNumber >= getMusicHandler(message.guild.id).queue.length) {
 			logger.warn(`Argument songNumber isn't valid: ${songNumber}`);
 			return message.reply('Inserisci un numero valido');
 		}
 
 		logger.info(`Removing song ${songNumber} from queue`);
-		const removedSong = message.getMusicHandler().queue.splice(songNumber - 1, 1);
+		const removedSong = getMusicHandler(message.guild.id).queue.splice(songNumber - 1, 1);
 
 		return message.channel.send(`Ho rimosso la canzone ${removedSong[0].title} dalla queue`);
 	},

@@ -1,4 +1,5 @@
-import { Command, eMessage } from '../../config';
+import { Message } from 'discord.js';
+import { Command, getMusicHandler } from '../../config';
 import { logger } from '../../logger';
 
 const loopCommand : Command = {
@@ -13,14 +14,14 @@ const loopCommand : Command = {
 		},
 	],
 
-	run(message : eMessage, { numOfTimesToLoop } : { numOfTimesToLoop : number}) {
+	run(message : Message, { numOfTimesToLoop } : { numOfTimesToLoop : number}) {
 		const voiceChannel = message.member.voice.channel;
 		if (!voiceChannel) {
 			logger.warn('User isn\'t in a voice channel');
 			return message.reply('Devi essere in un canale plebeo');
 		}
 
-		if(!message.getMusicHandler()) {
+		if(!getMusicHandler(message.guild.id)) {
 			logger.warn('Guild music handler isn\'t playing anything');
 			return message.reply('Bruh non sto riproducendo niente');
 		}
@@ -37,13 +38,13 @@ const loopCommand : Command = {
 
 		logger.info(`Adding current playing song to the beginning of the queue ${numOfTimesToLoop} times`);
 		for(let i = 0; i < numOfTimesToLoop; i++) {
-			message.getMusicHandler().queue.unshift(message.getMusicHandler().nowPlaying);
+			getMusicHandler(message.guild.id).queue.unshift(getMusicHandler(message.guild.id).nowPlaying);
 		}
 
-		logger.verbose(message.getMusicHandler().queue);
+		logger.verbose(getMusicHandler(message.guild.id).queue);
 
 		return message.channel.send(
-			`${message.getMusicHandler().nowPlaying.title} verrà loopato per ${numOfTimesToLoop} ${
+			`${getMusicHandler(message.guild.id).nowPlaying.title} verrà loopato per ${numOfTimesToLoop} ${
 				(numOfTimesToLoop == 1) ? 'volta' : 'volte'
 			}`
 		);

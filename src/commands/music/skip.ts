@@ -1,4 +1,5 @@
-import { Command, eMessage } from '../../config';
+import { Message } from 'discord.js';
+import { Command, getMusicHandler } from '../../config';
 import { logger } from '../../logger';
 
 const skipCommand : Command = {
@@ -6,14 +7,14 @@ const skipCommand : Command = {
 	aliases: ['skip-song', 'advance-song'],
 	description: 'Salta la canzone',
 
-	run(message : eMessage) {
+	run(message : Message) {
 		const voiceChannel = message.member.voice.channel;
 		if (!voiceChannel) {
 			logger.warn('User isn\'t in a voice channel');
 			return message.reply('Devi essere in un canale plebeo');
 		}
 
-		if(!message.getMusicHandler()) {
+		if(!getMusicHandler(message.guild.id)) {
 			logger.warn('Guild music handler isn\'t playing anything');
 			return message.reply('Bruh non sto riproducendo niente');
 		}
@@ -24,7 +25,7 @@ const skipCommand : Command = {
 		}
 
 		logger.info('Stopped current playback');
-		message.getMusicHandler().songDispatcher.player.stop();
+		getMusicHandler(message.guild.id).songDispatcher.player.stop();
 	},
 };
 

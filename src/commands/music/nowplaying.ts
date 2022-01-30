@@ -1,6 +1,6 @@
 import { AudioResource } from '@discordjs/voice';
-import { MessageEmbed } from 'discord.js';
-import { Command, eMessage } from '../../config';
+import { Message, MessageEmbed } from 'discord.js';
+import { Command, getMusicHandler } from '../../config';
 import { logger } from '../../logger';
 import { videoObj } from '../../musicHandler';
 
@@ -9,14 +9,14 @@ const npCommand : Command = {
 	aliases: ['np', 'currently-playing', 'now-playing'],
 	description: 'Lascia un canale e cancella la queue',
 
-	async run(message : eMessage) {
+	async run(message : Message) {
 		const voiceChannel = message.member.voice.channel;
 		if (!voiceChannel) {
 			logger.warn('User isn\'t in a voice channel');
 			return message.reply('Devi essere in un canale plebeo');
 		}
 
-		if(!message.getMusicHandler()) {
+		if(!getMusicHandler(message.guild.id)) {
 			logger.warn('Guild music handler isn\'t playing anything');
 			return message.reply('Bruh non sto riproducendo niente');
 		}
@@ -26,7 +26,7 @@ const npCommand : Command = {
 			return message.reply('Devi essere nel mio stesso canale plebeo');
 		}
 
-		const video = message.getMusicHandler().nowPlaying;
+		const video = getMusicHandler(message.guild.id).nowPlaying;
 		logger.verbose(video);
 
 		const description = video.duration == 'Live Stream' ? 'Live Stream' : playbackBar(message, video);
@@ -43,8 +43,8 @@ const npCommand : Command = {
 };
 
 
-const playbackBar = (message : eMessage, video : videoObj) : string => {
-	const passedTimeInMS = ((message.getMusicHandler().songDispatcher.player.state as any).resource as AudioResource).playbackDuration;
+const playbackBar = (message : Message, video : videoObj) : string => {
+	const passedTimeInMS = ((getMusicHandler(message.guild.id).songDispatcher.player.state as any).resource as AudioResource).playbackDuration;
 	const passedTimeFormatted = formatDuration(passedTimeInMS / 1000);
 
 	const totalDurationObj = video.rawDuration;
