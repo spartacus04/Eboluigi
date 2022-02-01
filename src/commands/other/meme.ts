@@ -25,7 +25,7 @@ const memeCommand : Command = {
 				.setColor('#00A2E8')
 				.setTitle(postData.title)
 				.setImage(postData.url)
-				.setFooter(`Postato da u/${postData.author} su r/hmmm (${postData.ups} upvotes)`);
+				.setFooter({ text: `Postato da u/${postData.author} su r/hmmm (${postData.ups} upvotes)` });
 
 			await message.channel.send({ embeds : [ embed ] });
 		}

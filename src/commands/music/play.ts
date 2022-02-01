@@ -209,10 +209,7 @@ const playSong = async (queue : videoObj[], message : Message) => {
 			.setColor('#e9f931')
 			.addField('Ora riproducendo:', queue[0].title)
 			.addField('Durata:', queue[0].duration)
-			.setFooter(
-				`Richiesta da ${queue[0].memberDisplayName}`,
-				queue[0].memberAvatar
-			);
+			.setFooter({ text: `Richiesta da ${queue[0].memberDisplayName}`, iconURL: queue[0].memberAvatar });
 
 		if (queue[1]) videoEmbed.addField('Prossima canzone:', queue[1].title);
 
