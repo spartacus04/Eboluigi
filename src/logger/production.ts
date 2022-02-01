@@ -2,6 +2,7 @@ import winston, { format, transports } from 'winston';
 import DailyRotateFile from 'winston-daily-rotate-file';
 import { stringify } from 'flatted';
 
+
 const { combine } = format;
 
 const prettyPrint = format.printf(({ timestamp, level, message }) => {
@@ -29,6 +30,7 @@ export const createProdLogger = () : winston.Logger => {
 				filename: 'combined-%DATE%.log',
 				datePattern: 'YYYY-MM-DD-HH',
 				zippedArchive: true,
+				dirname: 'logs',
 				maxFiles: '1d',
 				level: 'verbose',
 			}),
@@ -36,6 +38,7 @@ export const createProdLogger = () : winston.Logger => {
 				filename: 'debug-%DATE%.log',
 				datePattern: 'YYYY-MM-DD-HH',
 				zippedArchive: false,
+				dirname: 'logs',
 				maxFiles: '1d',
 				level: 'info',
 			}),
@@ -43,6 +46,7 @@ export const createProdLogger = () : winston.Logger => {
 				filename: 'errors-%DATE%.log',
 				datePattern: 'YYYY-MM-DD',
 				zippedArchive: false,
+				dirname: 'logs',
 				maxFiles: '1d',
 				level: 'error',
 			}),
