@@ -27,10 +27,12 @@
     "discord.js": "^13.6.0",
     "dotenv": "^15.0.0",
     "ffmpeg-static": "^4.4.1",
+    "flatted": "^3.2.5",
     "libsodium-wrappers": "^0.7.9",
     "node-fetch": "<3.*",
     "soundcloud-downloader": "^1.0.0",
     "to-zalgo": "^1.0.1",
-    "winston": "^3.4.0"
+    "winston": "^3.4.0",
+    "winston-daily-rotate-file": "^4.6.0"
   }
 }

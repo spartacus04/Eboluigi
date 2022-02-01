@@ -15,14 +15,6 @@ export const createDevLogger = () : winston.Logger => {
 		),
 		transports: [
 			new transports.Console(),
-			new transports.File({
-				filename: 'combined.log',
-				level: 'info',
-			}),
-			new transports.File({
-				filename: 'verbose.log',
-				level: 'verbose',
-			}),
 		],
 	});
 };
