@@ -22,7 +22,7 @@ Eboluigi è il secondo bot del server discord del prosciutthanos, può fare molt
   - m.help : Invia dei comandi di aiuto
   - m.kick/kick-member/throw <utente da espellere> <motivo dell'espulsione> : Espelle un membro del server
   - m.ping : Invia il ping del bot
-  - m.prune/delete-messages/bulk-delete <numero di messaggi> : Bandisce un membro del server
+  - m.prune/delete-messages/bulk-delete <numero di messaggi> : Elimina molteplici messaggi in seguenza
 
 ### music
   - m.earrape : Alza il volume di tantissimo per un secondo
@@ -49,6 +49,7 @@ Eboluigi è il secondo bot del server discord del prosciutthanos, può fare molt
   - m.nigga : Invia un N-Word pass
   - m.random/random-number/number-between <numero minimo> <numero massimo> : Invia un numero a caso tra quelli specificati
   - m.say <testo da ripetere> : Ripeto cio che scrivi in zalgo
+  - m.shrek/shrekkk : Invia un insulto in italiano
   - m.tpose : Risponde con una T-Pose
   - m.vsauce : Invia un video di vsauce
   - m.whomademe : Invia info riguardo al creatore

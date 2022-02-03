@@ -5,7 +5,7 @@ import { logger } from '../../logger';
 const pruneCommand : Command = {
 	name: 'prune',
 	aliases: ['delete-messages', 'bulk-delete'],
-	description: 'Bandisce un membro del server',
+	description: 'Elimina molteplici messaggi in seguenza',
 	adminOnly: true,
 	args: [
 		{
