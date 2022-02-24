@@ -25,7 +25,7 @@ const main = async () => {
 		await commandFiles.forEach(async cmd => {
 			const command : Command = await import(`../src/commands/${group}/${cmd}`);
 
-			let commandLine = `  - m.${command.name}`;
+			let commandLine = `  - l.${command.name}`;
 
 			if(command.aliases) {
 				command.aliases.forEach(alias => {
