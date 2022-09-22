@@ -8,7 +8,10 @@
     "readme": "ts-node-dev --transpile-only --clear scripts/rewriteReadme.ts",
     "lint": "eslint . --ext .ts",
     "tsc": "tsc",
-    "postinstall": "npm run tsc"
+    "postinstall": "npm run tsc",
+    "minor": "ts-node-dev --ignore-watch [package.json] --transpile-only scripts/updateMinor.ts",
+    "major": "ts-node-dev --ignore-watch [package.json] --transpile-only scripts/updateMajor.ts",
+    "patch": "ts-node-dev --ignore-watch [package.json] --transpile-only scripts/updatePatch.ts"
   },
   "keywords": [],
   "author": "",
