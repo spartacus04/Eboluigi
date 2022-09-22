@@ -1,5 +1,5 @@
 import { Command, getMusicHandler } from '../../config';
-import { Message, MessageActionRow, MessageButton, MessageComponentInteraction, MessageEmbed, User, VoiceChannel } from 'discord.js';
+import { Message, ActionRowBuilder, ButtonBuilder, MessageComponentInteraction, EmbedBuilder, User, VoiceChannel, ButtonStyle, ComponentType } from 'discord.js';
 import scdl from 'soundcloud-downloader/dist';
 import { TrackInfo } from 'soundcloud-downloader/dist/info';
 import { music, pushToQueue, videoObj } from '../../musicHandler';
@@ -113,34 +113,36 @@ const playCommand : Command = {
 			vidNameArr.push(video.title);
 		}
 
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setColor('#e9f931')
 			.setTitle('Scegli la canzone tramite i pulsanti')
-			.addField('1', vidNameArr[0])
-			.addField('2', vidNameArr[1])
-			.addField('3', vidNameArr[2])
-			.addField('4', vidNameArr[3])
-			.addField('5', vidNameArr[4])
-			.addField('Esci', 'exit');
-
-		const row = new MessageActionRow()
-			.addComponents(
-				new MessageButton().setCustomId('1').setLabel('1️⃣').setStyle('SUCCESS'),
-				new MessageButton().setCustomId('2').setLabel('2️⃣').setStyle('SUCCESS'),
-				new MessageButton().setCustomId('3').setLabel('3️⃣').setStyle('SUCCESS'),
-				new MessageButton().setCustomId('4').setLabel('4️⃣').setStyle('SUCCESS'),
-				new MessageButton().setCustomId('5').setLabel('5️⃣').setStyle('SUCCESS'),
+			.addFields(
+				{ name: '1', value: vidNameArr[0] },
+				{ name: '2', value: vidNameArr[1] },
+				{ name: '3', value: vidNameArr[2] },
+				{ name: '4', value: vidNameArr[3] },
+				{ name: '5', value: vidNameArr[4] },
+				{ name: 'Esci', value: 'exit' }
 			);
 
-		const exitRow = new MessageActionRow()
+		const row = new ActionRowBuilder<ButtonBuilder>()
 			.addComponents(
-				new MessageButton().setCustomId('exit').setLabel('❌').setStyle('DANGER'),
+				new ButtonBuilder().setCustomId('1').setLabel('1️⃣').setStyle(ButtonStyle.Success),
+				new ButtonBuilder().setCustomId('2').setLabel('2️⃣').setStyle(ButtonStyle.Success),
+				new ButtonBuilder().setCustomId('3').setLabel('3️⃣').setStyle(ButtonStyle.Success),
+				new ButtonBuilder().setCustomId('4').setLabel('4️⃣').setStyle(ButtonStyle.Success),
+				new ButtonBuilder().setCustomId('5').setLabel('5️⃣').setStyle(ButtonStyle.Success),
+			);
+
+		const exitRow = new ActionRowBuilder<ButtonBuilder>()
+			.addComponents(
+				new ButtonBuilder().setCustomId('exit').setLabel('❌').setStyle(ButtonStyle.Danger),
 			);
 
 		logger.info('sending video chooser');
 		const songEmbed = await message.channel.send({ embeds : [ embed ], components: [ row, exitRow ] });
 
-		const filter = (i : MessageComponentInteraction) => i.user.id == message.member.user.id && i.componentType == 'BUTTON';
+		const filter = (i : MessageComponentInteraction) => i.user.id == message.member.user.id && i.componentType == ComponentType.Button;
 
 		const collected = await songEmbed.awaitMessageComponent({ filter, time: 20000 }).catch(() => {
 			logger.warn('User did not respond in time');
@@ -204,14 +206,16 @@ const playSong = async (queue : videoObj[], message : Message) => {
 
 
 		logger.info('sending user info');
-		const videoEmbed = new MessageEmbed()
+		const videoEmbed = new EmbedBuilder()
 			.setThumbnail(queue[0].thumbnail)
 			.setColor('#e9f931')
-			.addField('Ora riproducendo:', queue[0].title)
-			.addField('Durata:', queue[0].duration)
+			.addFields(
+				{ name: 'Ora riproducendo:', value: queue[0].title },
+				{ name: 'Durata', value: queue[0].duration },
+			)
 			.setFooter({ text: `Richiesta da ${queue[0].memberDisplayName}`, iconURL: queue[0].memberAvatar });
 
-		if (queue[1]) videoEmbed.addField('Prossima canzone:', queue[1].title);
+		if (queue[1]) videoEmbed.addFields({ name: 'Prossima canzone:', value: queue[1].title });
 
 		await message.channel.send({ embeds: [ videoEmbed ] });
 

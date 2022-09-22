@@ -1,5 +1,5 @@
 import { Command } from '../../config';
-import { Message, MessageEmbed } from 'discord.js';
+import { Message, EmbedBuilder } from 'discord.js';
 import fetch from 'node-fetch';
 import { logger } from '../../logger';
 
@@ -21,7 +21,7 @@ const memeCommand : Command = {
 
 			const postData = allowed[Math.floor(Math.random() * allowed.length)].data;
 
-			const embed = new MessageEmbed()
+			const embed = new EmbedBuilder()
 				.setColor('#00A2E8')
 				.setTitle(postData.title)
 				.setImage(postData.url)

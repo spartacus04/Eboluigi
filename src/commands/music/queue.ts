@@ -1,5 +1,5 @@
 import { Command, getMusicHandler } from '../../config';
-import { Message, MessageEmbed } from 'discord.js';
+import { Message, EmbedBuilder } from 'discord.js';
 import { logger } from '../../logger';
 import { videoObj } from '../../musicHandler';
 
@@ -22,11 +22,11 @@ const queueCommand : Command = {
 			titleArray.push(obj.title);
 		});
 
-		const queueEmbed = new MessageEmbed()
+		const queueEmbed = new EmbedBuilder()
 			.setColor('#ff7373')
 			.setTitle(`Queue - ${getMusicHandler(message.guild.id).queue.length} oggetti`);
 		for (let i = 0; i < titleArray.length; i++) {
-			queueEmbed.addField(`${i + 1}:`, `${titleArray[i]}`);
+			queueEmbed.addFields({ name: `${i + 1}:`, value: `${titleArray[i]}` });
 		}
 		await message.channel.send({ embeds: [queueEmbed] });
 	},

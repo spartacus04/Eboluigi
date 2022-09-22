@@ -1,4 +1,4 @@
-import { Client, Intents, Message } from 'discord.js';
+import { Client, GatewayIntentBits, Message, Partials } from 'discord.js';
 import { music, musicGuild } from '../musicHandler';
 
 export interface argument{
@@ -21,9 +21,16 @@ export interface Command{
     run : (message : Message, args ?: any) => Promise<any>
 }
 
+export interface Listener {
+	deferred: boolean,
+
+	register: () => void,
+	unregister?: () => void,
+}
+
 export class eClient extends Client {
-    commands: Command[];
-    groups: string[];
+	commands: Command[];
+	groups: string[];
 }
 
 export const getMusicHandler = (guildId : string) : musicGuild => {
@@ -31,7 +38,18 @@ export const getMusicHandler = (guildId : string) : musicGuild => {
 };
 
 export const client = new eClient({
-	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_TYPING, Intents.FLAGS.GUILD_VOICE_STATES],
+	intents: [
+		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildMessages,
+		GatewayIntentBits.GuildMessageTyping,
+		GatewayIntentBits.GuildVoiceStates,
+		GatewayIntentBits.MessageContent,
+		Partials.Channel,
+		Partials.GuildMember,
+		Partials.Message,
+		Partials.User,
+		Partials.Reaction,
+	],
 });
 
 export const {

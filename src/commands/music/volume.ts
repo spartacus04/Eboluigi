@@ -28,7 +28,7 @@ const volumeCommand : Command = {
 			return message.reply('Bruh non sto riproducendo niente');
 		}
 
-		if(voiceChannel.id != message.guild.me.voice.channel.id) {
+		if(voiceChannel.id != message.member.voice.channel.id) {
 			logger.warn('User isn\'t in current voice channel');
 			return message.reply('Devi essere nel mio stesso canale plebeo');
 		}

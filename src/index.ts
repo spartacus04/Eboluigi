@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import fs from 'fs';
-import { DISCORD_TOKEN, client } from './config';
+import { DISCORD_TOKEN, client, Listener } from './config';
 import path from 'path';
 import { forEachParallel, getGroups, loadGroup } from './util';
 import { logger } from './logger';
@@ -22,15 +22,29 @@ const init = async () => {
 
 	// Initialize Listeners
 	const Listeners = fs.readdirSync(path.join(__dirname, 'listeners'));
+	const deferredListeners: Listener[] = [];
 
 	await forEachParallel(Listeners, async listenerFile => {
-		logger.info(`Loading Listener ${listenerFile}`);
-		await import(`./listeners/${listenerFile}`);
+		logger.info(`Loading listener ${listenerFile}`);
+		const listener : Listener = await import(`./listeners/${listenerFile}`);
+
+		if(listener.deferred) {
+			deferredListeners.push(listener);
+		}
+		else {
+			listener.register();
+		}
 	});
 
 	logger.info('Fully loaded listeners');
 
-	client.login(DISCORD_TOKEN);
+	client.login(DISCORD_TOKEN).then(() => {
+		logger.info('Ready');
+
+		forEachParallel(deferredListeners, async listener => {
+			await listener.register();
+		});
+	});
 };
 
 init();

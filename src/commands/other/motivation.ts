@@ -1,5 +1,5 @@
 import { Command } from '../../config';
-import { Message, MessageEmbed } from 'discord.js';
+import { Message, EmbedBuilder } from 'discord.js';
 import fs from 'fs';
 import { logger } from '../../logger';
 
@@ -15,7 +15,7 @@ const motivationCommand : Command = {
 
 		logger.info(`sending quote: ${randomQuote.author}`);
 
-		const quoteEmbed = new MessageEmbed()
+		const quoteEmbed = new EmbedBuilder()
 			.setTitle(randomQuote.author)
 			.setDescription(randomQuote.text)
 			.setColor('#ff003c');

@@ -1,5 +1,5 @@
 import { Command } from '../../config';
-import { Message, MessageEmbed } from 'discord.js';
+import { Message, EmbedBuilder, Colors } from 'discord.js';
 import { logger } from '../../logger';
 
 const banCommand : Command = {
@@ -37,10 +37,12 @@ const banCommand : Command = {
 		await user.ban({ reason });
 		logger.info(`Banned user ${user.displayName}`);
 
-		const banEmbed = new MessageEmbed()
-			.addField('Bannato', user.user.username)
-			.addField('Motivo', reason)
-			.setColor('RED');
+		const banEmbed = new EmbedBuilder()
+			.addFields(
+				{ name: 'Bannato', value: user.user.username },
+				{ name: 'Motivo', value: reason },
+			)
+			.setColor(Colors.Red);
 
 		await message.channel.send({ embeds: [banEmbed] });
 	},

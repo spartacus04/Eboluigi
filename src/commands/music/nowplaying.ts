@@ -1,5 +1,5 @@
 import { AudioResource } from '@discordjs/voice';
-import { Message, MessageEmbed } from 'discord.js';
+import { Message, EmbedBuilder } from 'discord.js';
 import { Command, getMusicHandler } from '../../config';
 import { logger } from '../../logger';
 import { videoObj } from '../../musicHandler';
@@ -21,7 +21,7 @@ const npCommand : Command = {
 			return message.reply('Bruh non sto riproducendo niente');
 		}
 
-		if(voiceChannel.id != message.guild.me.voice.channel.id) {
+		if(voiceChannel.id != message.member.voice.channel.id) {
 			logger.warn('User isn\'t in current voice channel');
 			return message.reply('Devi essere nel mio stesso canale plebeo');
 		}
@@ -31,7 +31,7 @@ const npCommand : Command = {
 
 		const description = video.duration == 'Live Stream' ? 'Live Stream' : playbackBar(message, video);
 
-		const videoEmbed = new MessageEmbed()
+		const videoEmbed = new EmbedBuilder()
 			.setThumbnail(video.thumbnail)
 			.setColor('#e9f931')
 			.setTitle(video.title)

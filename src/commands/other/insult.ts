@@ -1,5 +1,5 @@
 import { Command } from '../../config';
-import { Message, MessageEmbed } from 'discord.js';
+import { Message, EmbedBuilder } from 'discord.js';
 import fetch from 'node-fetch';
 import { logger } from '../../logger';
 
@@ -13,7 +13,7 @@ const insultCommand : Command = {
 			const data = await res.json() as any;
 			logger.verbose(data);
 
-			const embed = new MessageEmbed()
+			const embed = new EmbedBuilder()
 				.setColor('#E41032')
 				.setTitle('Insulto')
 				.setDescription(data.insult)

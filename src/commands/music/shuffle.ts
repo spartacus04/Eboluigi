@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from 'discord.js';
+import { Message, EmbedBuilder } from 'discord.js';
 import { Command, getMusicHandler } from '../../config';
 import { logger } from '../../logger';
 import { videoObj } from '../../musicHandler';
@@ -19,7 +19,7 @@ const shuffleCommand : Command = {
 			return message.reply('Bruh non sto riproducendo niente');
 		}
 
-		if(voiceChannel.id != message.guild.me.voice.channel.id) {
+		if(voiceChannel.id != message.member.voice.channel.id) {
 			logger.warn('User isn\'t in current voice channel');
 			return message.reply('Devi essere nel mio stesso canale plebeo');
 		}
@@ -39,11 +39,11 @@ const shuffleCommand : Command = {
 			titleArray.push(element.title);
 		});
 
-		const queueEmbed = new MessageEmbed()
+		const queueEmbed = new EmbedBuilder()
 			.setColor('#ff7373')
 			.setTitle('Nuova Queue');
 		for(let i = 0; i < 10; i++) {
-			queueEmbed.addField(`${i + 1}`, titleArray[i]);
+			queueEmbed.addFields({ name: `${i + 1}:`, value: `${titleArray[i]}` });
 		}
 
 		return message.channel.send({ embeds: [queueEmbed] });

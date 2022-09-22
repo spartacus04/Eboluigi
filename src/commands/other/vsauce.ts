@@ -1,5 +1,5 @@
 import { Command } from '../../config';
-import { Message, MessageEmbed } from 'discord.js';
+import { Message, EmbedBuilder } from 'discord.js';
 import fs from 'fs';
 
 const vsauceCommand : Command = {
@@ -11,7 +11,7 @@ const vsauceCommand : Command = {
 
 		const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
 
-		const quoteEmbed = new MessageEmbed()
+		const quoteEmbed = new EmbedBuilder()
 			.setTitle(randomQuote.text)
 			.setColor('#ff003c');
 
