@@ -3,6 +3,7 @@
   "version": "4.5.0",
   "description": "",
   "main": "dist/index.js",
+  "type": "module",
   "scripts": {
     "dev": "ts-node-dev --transpile-only --clear src/index.ts",
     "readme": "ts-node-dev --transpile-only --clear scripts/rewriteReadme.ts",
@@ -18,25 +19,24 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^18.7.18",
-    "@types/node-fetch": "<3.*",
-    "@typescript-eslint/eslint-plugin": "^5.10.0",
-    "@typescript-eslint/parser": "^5.10.0",
-    "eslint": "^8.7.0",
+    "@typescript-eslint/eslint-plugin": "^5.38.0",
+    "@typescript-eslint/parser": "^5.38.0",
+    "dotenv": "^16.0.2",
+    "eslint": "^8.23.1",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^4.8.3",
-    "dotenv": "^16.0.2"
+    "typescript": "^4.8.3"
   },
   "dependencies": {
     "@discordjs/opus": "^0.8.0",
     "@discordjs/voice": "^0.11.0",
     "discord.js": "^14.4.0",
     "ffmpeg-static": "^5.1.0",
-    "flatted": "^3.2.5",
-    "libsodium-wrappers": "^0.7.9",
-    "node-fetch": "<3.*",
+    "flatted": "^3.2.7",
+    "libsodium-wrappers": "^0.7.10",
+    "node-fetch": "^3.2.10",
     "soundcloud-downloader": "^1.0.0",
     "to-zalgo": "^1.0.1",
-    "winston": "^3.4.0",
-    "winston-daily-rotate-file": "^4.6.0"
+    "winston": "^3.8.2",
+    "winston-daily-rotate-file": "^4.7.1"
   }
 }
