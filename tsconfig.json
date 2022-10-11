@@ -9,6 +9,8 @@
     "forceConsistentCasingInFileNames": true,
     "outDir": "dist",
     "removeComments": true,
+    "noImplicitAny": false,
+    "noUnusedParameters": false,
     "strictNullChecks": false,
     "typeRoots": ["./typings", "./node_modules/@types"],
     "lib": [
