@@ -39,9 +39,12 @@ const init = async () => {
 	logger.info('Fully loaded listeners');
 
 	client.login(DISCORD_TOKEN).then(() => {
-		forEachParallel(deferredListeners, async listener => {
+		deferredListeners.forEach(async (listener, key) => {
+			logger.info(`Loading deferred listener ${key}`);
 			await listener.register();
 		});
+
+		logger.info('Fully loaded deferred listeners');
 	});
 };
 
