@@ -1,28 +1,15 @@
 import winston, { format, transports } from 'winston';
-const { combine } = format;
-import { stringify } from 'flatted';
+import { flat, prettyPrint } from './shared';
 
-const prettyPrint = format.printf(({ timestamp, level, message }) => {
-	return `[${timestamp} ${level}]: ${message}`;
-});
-
-export const createDevLogger = () : winston.Logger => {
+export const createDevLogger = (): winston.Logger => {
 	return winston.createLogger({
 		level: 'info',
-		format: combine(
+		format: format.combine(
 			format.colorize(),
 			format.timestamp(),
-			format.printf((info) => {
-				if (typeof info.message === 'object') {
-					info.message = stringify(info.message, null, 4);
-				}
-
-				return info.message;
-			}),
+			flat,
 			prettyPrint,
 		),
-		transports: [
-			new transports.Console(),
-		],
+		transports: [new transports.Console()],
 	});
 };

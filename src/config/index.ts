@@ -1,3 +1,2 @@
-export * from './credentials';
-export * from './discord';
+export * from './bot';
 export * from './enviroment';

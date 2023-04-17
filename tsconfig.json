@@ -1,25 +1,24 @@
 {
-  "compilerOptions": {
-    "target": "ES2019",
-    "module": "commonjs",
-    "rootDir": "src",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "outDir": "dist",
-    "removeComments": true,
-    "noImplicitAny": false,
-    "noUnusedParameters": false,
-    "strictNullChecks": false,
-    "typeRoots": ["./typings", "./node_modules/@types"],
-    "lib": [
-      "ES5",
-      "ES2015.Promise",
-      "ES2016.Array.Include",
-      "ES6",
-      "esnext"
-    ]
-  },
-  "exclude": ["node_modules", "typings", "dist", "scripts"]
+	"compilerOptions": {
+		"target": "ES2019",
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"baseUrl": "./src",
+		"rootDir": "src",
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"outDir": "dist",
+		"removeComments": true,
+		"strictNullChecks": false,
+		"typeRoots": ["./typings", "./node_modules/@types"],
+		"lib": ["ES5", "ES2015.Promise", "ES2016.Array.Include", "ES6", "esnext"],
+		"paths": {
+			"@config": ["config"],
+			"@logger": ["logger"],
+			"@commandHandler": ["bot/commandhandler"]
+		}
+	},
+	"exclude": ["node_modules", "typings", "dist", "scripts"]
 }

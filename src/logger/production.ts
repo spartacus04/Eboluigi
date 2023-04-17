@@ -1,27 +1,15 @@
 import winston, { format, transports } from 'winston';
 import DailyRotateFile from 'winston-daily-rotate-file';
-import { stringify } from 'flatted';
+import { flat, prettyPrint } from './shared';
 
 
-const { combine } = format;
-
-const prettyPrint = format.printf(({ timestamp, level, message }) => {
-	return `[${timestamp} ${level}]: ${message}`;
-});
-
-export const createProdLogger = () : winston.Logger => {
+export const createProdLogger = (): winston.Logger => {
 	return winston.createLogger({
 		level: 'verbose',
-		format: combine(
+		format: format.combine(
 			format.timestamp(),
 			format.json(),
-			format.printf((info) => {
-				if (typeof info.message === 'object') {
-					info.message = stringify(info.message, null, 4);
-				}
-
-				return info.message;
-			}),
+			flat,
 			prettyPrint,
 		),
 		transports: [

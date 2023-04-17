@@ -6,6 +6,7 @@ const { version : oldVersion } = pack;
 
 const splitted = oldVersion.split('.').map(e => +e);
 splitted[1] += 1;
+splitted[2] = 0;
 
 const newVersion = splitted.join('.');
 pack.version = newVersion;
