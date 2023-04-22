@@ -1,5 +1,5 @@
 # Typescript
-FROM arm64v8/node:19-alpine as build
+FROM arm64v8/node:19 as build
 
 WORKDIR /usr/src/app
 
@@ -12,7 +12,7 @@ COPY . .
 RUN npm run build
 
 # Run prod
-FROM arm64v8/node:19-alpine as prod
+FROM arm64v8/node:19 as prod
 
 ARG NODE_ENV=prod
 ENV NODE_ENV=${NODE_ENV}
