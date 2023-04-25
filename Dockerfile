@@ -14,8 +14,8 @@ RUN npm run build
 # Run prod
 FROM arm64v8/node:19-alpine as prod
 
-ARG NODE_ENV=prod
-ENV NODE_ENV=${NODE_ENV}
+ENV NODE_ENV="prod"
+ENV TZ="Europe/Rome"
 
 WORKDIR /usr/src/app
 
