@@ -6,7 +6,6 @@ RUN apk add --no-cache --virtual .gyp python3 make gcc g++
 RUN npm i -g pnpm
 
 COPY package*.json .
-COPY pnpm-lock.yaml .
 
 RUN pnpm i
 
@@ -28,7 +27,6 @@ RUN apk add --no-cache --virtual .gyp python3 make gcc g++
 RUN npm i -g pnpm
 
 COPY package*.json .
-COPY pnpm-lock.yaml .
 
 RUN pnpm i --prod
 
