@@ -1,18 +1,22 @@
 # Typescript
-FROM arm64v8/node:19-alpine as build
+FROM node:20-alpine as build
 
 WORKDIR /usr/src/app
 
 COPY package*.json .
 
+RUN apk add --no-cache --virtual .gyp python3 make gcc g++
+
 RUN npm install
+
+RUN apk del .gyp
 
 COPY . .
 
 RUN npm run build
 
 # Run prod
-FROM arm64v8/node:19-alpine as prod
+FROM node:20-alpine as prod
 
 ENV NODE_ENV="prod"
 ENV TZ="Europe/Rome"
@@ -21,7 +25,11 @@ WORKDIR /usr/src/app
 
 COPY package*.json .
 
+RUN apk add --no-cache --virtual .gyp python3 make gcc g++
+
 RUN npm install --only-production
+
+RUN apk del .gyp
 
 COPY --from=build /usr/src/app/dist ./dist
 
