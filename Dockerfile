@@ -1,15 +1,14 @@
 # Typescript
 FROM node:20-alpine as build
-
 WORKDIR /usr/src/app
 
 RUN apk add --no-cache --virtual .gyp python3 make gcc g++
-
 RUN npm i -g pnpm
 
 COPY package*.json .
+COPY pnpm-lock.yaml .
 
-RUN pnpm install
+RUN pnpm i
 
 RUN apk del .gyp
 
@@ -26,17 +25,16 @@ ENV TZ="Europe/Rome"
 WORKDIR /usr/src/app
 
 RUN apk add --no-cache --virtual .gyp python3 make gcc g++
-
 RUN npm i -g pnpm
 
 COPY package*.json .
+COPY pnpm-lock.yaml .
 
-RUN pnpm install --prod
+RUN pnpm i --prod
 
 RUN apk del .gyp
 
 COPY --from=build /usr/src/app/dist ./dist
-
 COPY resources ./resources
 
 CMD ["node", "dist/index.js"]

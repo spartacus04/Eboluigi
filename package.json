@@ -38,7 +38,7 @@
     "discord.js": "^14.11.0",
     "ffmpeg-static": "^5.1.0",
     "flatted": "^3.2.7",
-    "libsodium-wrappers": "^0.7.11",
+    "sodium-native": "^4.0.1",
     "to-zalgo": "^1.0.1",
     "winston": "^3.8.2",
     "winston-daily-rotate-file": "^4.7.1"
