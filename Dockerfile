@@ -3,11 +3,13 @@ FROM node:20-alpine as build
 
 WORKDIR /usr/src/app
 
-COPY package*.json .
-
 RUN apk add --no-cache --virtual .gyp python3 make gcc g++
 
-RUN npm install
+RUN npm i -g pnpm
+
+COPY package*.json .
+
+RUN pnpm install
 
 RUN apk del .gyp
 
@@ -23,11 +25,13 @@ ENV TZ="Europe/Rome"
 
 WORKDIR /usr/src/app
 
-COPY package*.json .
-
 RUN apk add --no-cache --virtual .gyp python3 make gcc g++
 
-RUN npm install --only-production
+RUN npm i -g pnpm
+
+COPY package*.json .
+
+RUN pnpm install --prod
 
 RUN apk del .gyp
 
