@@ -25,7 +25,7 @@
     "eslint": "^8.40.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-import": "^2.27.5",
-    "prettier": "^2.8.8",
+    "prettier": "^3.0.0",
     "ts-node-dev": "^2.0.0",
     "tsc-alias": "^1.8.6",
     "tsconfig-paths": "^4.2.0",
