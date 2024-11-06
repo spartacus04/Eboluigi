@@ -17,12 +17,10 @@ export class eClient extends Client {
 		const commandPath = path.join(__dirname, '../commands');
 		this.groups = fs.readdirSync(commandPath).filter(group => group != 'shared');
 
-		if(isDevelopment) this.rewriteReadme();
-
 		return this.groups;
 	};
 
-	private rewriteReadme = async (): Promise<void> => {
+	public rewriteReadme = async (): Promise<void> => {
 		const readmePath = path.join(process.cwd(), 'README.md');
 
 		if(fs.existsSync(readmePath)) fs.rmSync(readmePath);

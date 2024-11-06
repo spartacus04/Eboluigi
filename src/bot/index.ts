@@ -13,6 +13,8 @@ client.commands = [];
 		await client.loadGroup(group);
 	});
 
+	await client.rewriteReadme()
+
 	logger.info('Fully loaded commands');
 
 	// Initialize Listeners
